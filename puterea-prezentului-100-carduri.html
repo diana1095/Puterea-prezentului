@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puterea Prezentului – 100 Carduri</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --cream: #fdf8f2;
+    --gold: #c9a96e;
+    --violet-bg: linear-gradient(145deg, #2d1b4e 0%, #4a2070 40%, #7b3fa0 100%);
+    --rose-bg: linear-gradient(135deg, #f9ddd3 0%, #f2b8a8 30%, #e08878 70%, #c96070 100%);
+    --teal-bg: linear-gradient(150deg, #0d4a5c 0%, #1a7a82 40%, #4ab8a0 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1226;
+    font-family: 'Jost', sans-serif;
+    min-height: 100vh;
+    padding: 40px 16px 80px;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(123,94,167,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(74,155,142,0.12) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative; z-index: 1;
+    animation: fadeUp 1s ease forwards;
+  }
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--cream);
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .page-sub {
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .deco { display: flex; align-items: center; gap: 14px; max-width: 280px; margin: 0 auto; }
+  .deco span { flex:1; height:1px; background: linear-gradient(90deg, transparent, rgba(201,169,110,0.4), transparent); }
+  .deco em { font-family: 'Cormorant Garamond', serif; font-style:italic; font-size:0.85rem; color:rgba(201,169,110,0.55); white-space:nowrap; }
+
+  /* NAV */
+  .nav {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    margin-bottom: 40px; position: relative; z-index: 1;
+    animation: fadeUp 1s ease forwards 0.3s; opacity: 0;
+  }
+  .nav-btn {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 9px 22px; border-radius: 30px; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.6);
+    transition: all 0.3s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: rgba(201,169,110,0.15);
+    border-color: rgba(201,169,110,0.4);
+    color: var(--gold);
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+
+  /* CARD SCENE */
+  .card-scene {
+    perspective: 1000px;
+    height: 400px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.75s cubic-bezier(0.4,0,0.2,1);
+    cursor: pointer;
+    border-radius: 18px;
+  }
+  .card-scene:hover .card-inner { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute; inset: 0;
+    border-radius: 18px;
+    backface-visibility: hidden;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 32px 28px;
+  }
+  .card-back { transform: rotateY(180deg); }
+
+  /* ── VIOLET ── */
+  .v .card-front {
+    background: var(--violet-bg);
+    border: 1px solid rgba(201,169,110,0.3);
+    box-shadow: 0 18px 50px rgba(123,94,167,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .v .card-front::before {
+    content:''; position:absolute; top:-50px; right:-50px;
+    width:180px; height:180px;
+    background: radial-gradient(circle, rgba(201,169,110,0.22) 0%, transparent 70%);
+    border-radius:50%;
+  }
+  .v .card-back {
+    background: linear-gradient(145deg, #1a0f35 0%, #2d1b4e 100%);
+    border: 1px solid rgba(201,169,110,0.2);
+    box-shadow: 0 18px 50px rgba(123,94,167,0.4);
+  }
+
+  /* ── ROSE ── */
+  .r .card-front {
+    background: var(--rose-bg);
+    box-shadow: 0 18px 50px rgba(201,96,112,0.35);
+  }
+  .r .card-front::before {
+    content:''; position:absolute;
+    top:18px; left:18px; right:18px; bottom:18px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius:12px; pointer-events:none;
+  }
+  .r .card-back {
+    background: linear-gradient(135deg, #fff5f2 0%, #fde8e0 100%);
+    box-shadow: 0 18px 50px rgba(201,96,112,0.2);
+  }
+
+  /* ── TEAL ── */
+  .t .card-front {
+    background: var(--teal-bg);
+    box-shadow: 0 18px 50px rgba(26,122,130,0.4);
+  }
+  .t .card-back {
+    background: linear-gradient(150deg, #e8f7f5 0%, #c8ede8 100%);
+    box-shadow: 0 18px 50px rgba(26,122,130,0.2);
+  }
+
+  /* FRONT ELEMENTS */
+  .card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem; font-weight: 300;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    margin-bottom: 16px; position: relative; z-index:1;
+  }
+  .v .card-num { color: var(--gold); }
+  .r .card-num { color: rgba(255,255,255,0.65); }
+  .t .card-num { color: rgba(255,255,255,0.55); }
+
+  .card-ornament {
+    font-size: 1.6rem; margin-bottom: 14px;
+    position: relative; z-index:1; line-height:1;
+  }
+
+  .card-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2.2vw, 1.22rem);
+    font-weight: 400; line-height: 1.65;
+    text-align: center; position: relative; z-index:1;
+  }
+  .v .card-text { color: #f0e8ff; font-style:italic; }
+  .r .card-text { color: #fff; }
+  .t .card-text { color: #e8faf8; font-style:italic; }
+
+  .card-divider {
+    width:36px; height:1px; margin:16px auto;
+    position:relative; z-index:1;
+  }
+  .v .card-divider { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .r .card-divider { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent); }
+  .t .card-divider { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent); }
+
+  .card-brand {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem; font-weight:300;
+    letter-spacing: 0.32em; text-transform:uppercase;
+    position:relative; z-index:1;
+  }
+  .v .card-brand { color: rgba(201,169,110,0.55); }
+  .r .card-brand { color: rgba(255,255,255,0.45); }
+  .t .card-brand { color: rgba(255,255,255,0.4); }
+
+  /* BACK ELEMENTS */
+  .back-icon { font-size:2rem; margin-bottom:12px; }
+  .back-title {
+    font-family:'Cormorant Garamond', serif;
+    font-size:0.9rem; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .back-desc {
+    font-family:'Jost', sans-serif;
+    font-size:0.76rem; font-weight:300;
+    line-height:1.65; text-align:center;
+    max-width:220px; margin-bottom:14px;
+  }
+  .back-tip {
+    padding:9px 16px; border-radius:30px;
+    font-family:'Jost', sans-serif;
+    font-size:0.68rem; font-weight:400;
+    letter-spacing:0.06em; text-align:center;
+    margin-bottom: 12px;
+  }
+  /* QR container */
+  .qr-wrap {
+    margin-top: 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+  }
+  .qr-box {
+    width: 56px; height: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qr-box canvas, .qr-box img { width:56px!important; height:56px!important; }
+  .qr-label {
+    font-family:'Jost', sans-serif;
+    font-size:0.58rem; font-weight:300;
+    letter-spacing:0.2em; text-transform:uppercase;
+  }
+
+  .v .back-title { color: #7b5ea7; }
+  .v .back-desc  { color: #4a3570; }
+  .v .back-tip   { background: rgba(123,94,167,0.1); color:#7b5ea7; border:1px solid rgba(123,94,167,0.22); }
+  .v .qr-box     { background: #fff; }
+  .v .qr-label   { color: rgba(123,94,167,0.6); }
+
+  .r .back-title { color: #c96070; }
+  .r .back-desc  { color: #7a3a45; }
+  .r .back-tip   { background: rgba(201,96,112,0.1); color:#c96070; border:1px solid rgba(201,96,112,0.22); }
+  .r .qr-box     { background: #fff; }
+  .r .qr-label   { color: rgba(201,96,112,0.6); }
+
+  .t .back-title { color: #1a7a82; }
+  .t .back-desc  { color: #1a5a55; }
+  .t .back-tip   { background: rgba(74,155,142,0.1); color:#1a7a82; border:1px solid rgba(74,155,142,0.22); }
+  .t .qr-box     { background: #fff; }
+  .t .qr-label   { color: rgba(26,122,130,0.6); }
+
+  /* COUNTER */
+  .counter {
+    text-align:center; margin-bottom: 28px;
+    font-family:'Cormorant Garamond', serif;
+    font-size:0.85rem; font-weight:300;
+    color:rgba(201,169,110,0.5);
+    letter-spacing:0.2em;
+    position:relative; z-index:1;
+    animation: fadeUp 0.8s ease forwards 0.5s; opacity:0;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(20px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .hint {
+    text-align:center;
+    font-size:0.68rem; font-weight:300;
+    letter-spacing:0.25em; text-transform:uppercase;
+    color:rgba(255,255,255,0.25);
+    margin-top:40px;
+    position:relative; z-index:1;
+  }
+
+  @media print {
+    body { background: white; padding: 10px; }
+    .nav, .hint, .page-header { display:none; }
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card-scene { opacity:1; animation:none; height:340px; }
+    .card-inner { transform: none!important; }
+    .card-back { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <p class="page-sub">Colecție premium · 100 afirmații psihologice</p>
+  <h1 class="page-title">Puterea Prezentului</h1>
+  <div class="deco">
+    <span></span><em>față & verso · cod QR</em><span></span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="filterCards('all')">Toate (100)</button>
+  <button class="nav-btn" onclick="filterCards('v')">🔮 Violet (34)</button>
+  <button class="nav-btn" onclick="filterCards('r')">🌸 Roz (33)</button>
+  <button class="nav-btn" onclick="filterCards('t')">🌊 Teal (33)</button>
+</div>
+
+<div class="counter" id="counter">Afișând toate 100 de carduri</div>
+
+<div class="grid" id="grid"></div>
+
+<p class="hint">✦ &nbsp; Trece mouse-ul peste carduri pentru a vedea verso &nbsp; ✦</p>
+
+<script>
+const INSTAGRAM = "https://www.instagram.com/alexandraa.dianaaa?igsh=aWZobm5hbHN4bHRv";
+
+const afirmatii = [
+  // ANXIETATE 1-40
+  { id:1,  text:"Sunt în siguranță în acest moment. Respirația mea mă ancorează în prezent.", icon:"🌬️", tip:"Inspiră 4 sec · Ține 4 sec · Expiră 4 sec", desc:"Anxietatea trăiește în viitor, nu în prezent. Această afirmație activează sistemul nervos parasimpatic." },
+  { id:2,  text:"Anxietatea este o senzație temporară, nu realitatea mea permanentă.", icon:"🌊", tip:"Observă senzația fără să o judeci", desc:"Gândurile și emoțiile vin și pleacă ca valurile. Tu ești plaja, nu valul." },
+  { id:3,  text:"Am trecut prin momente grele înainte și le-am depășit.", icon:"💪", tip:"Amintește-ți 3 momente în care ai reușit", desc:"Istoria ta personală de rezistență este cea mai puternică dovadă a capacității tale." },
+  { id:4,  text:"Corpul meu știe cum să se liniștească. Am încredere în el.", icon:"🫀", tip:"Scanează corpul de la cap la picioare cu blândețe", desc:"Sistemul nervos are mecanisme naturale de autoreglare. Poți facilita acest proces." },
+  { id:5,  text:"Gândurile mele nu sunt fapte. Le observ și le las să treacă.", icon:"☁️", tip:"Vizualizează gândurile ca nori pe cer", desc:"Defuziunea cognitivă înseamnă să observi gândul fără să te identifici cu el." },
+  { id:6,  text:"Nu trebuie să controlez totul. Pot lăsa lucrurile să se desfășoare.", icon:"🍃", tip:"Scrie ce poți și ce nu poți controla", desc:"Acceptarea incertitudinii reduce semnificativ nivelul de anxietate cronică." },
+  { id:7,  text:"Fiecare respirație adâncă îmi aduce calm și claritate.", icon:"✨", tip:"Respiră adânc de 3 ori acum, conștient", desc:"Respirația diafragmatică activează nervul vag și induce starea de relaxare." },
+  { id:8,  text:"Sunt mai puternic decât frica mea.", icon:"🦁", tip:"Repetă de 3 ori dimineața, privind în oglindă", desc:"Frica este o emoție normală, nu un semn de slăbiciune. Curajul este să acționezi cu ea." },
+  { id:9,  text:"Momentul de față este singurul loc în care trăiesc cu adevărat.", icon:"⏳", tip:"Numește 5 lucruri pe care le vezi acum", desc:"Mindfulness-ul ancorează conștiința în prezent, reducând ruminația." },
+  { id:10, text:"Nu sunt anxietatea mea. Eu sunt cel care o observă.", icon:"👁️", tip:"Spune: 'Observ că simt anxietate'", desc:"Distanțarea de emoție prin observare reduce intensitatea acesteia cu până la 50%." },
+  { id:11, text:"Permit emoțiilor să treacă prin mine fără să mă definească.", icon:"🌀", tip:"Lasă emoția să fie acolo fără să o combați", desc:"Rezistența față de emoții le amplifică. Acceptarea le permite să treacă natural." },
+  { id:12, text:"Mintea mea se poate liniști. Aleg pacea în acest moment.", icon:"🕊️", tip:"Închide ochii 60 de secunde și respiră", desc:"Alegerea conștientă a stării interioare este un act de putere personală." },
+  { id:13, text:"Sunt protejat și îngrijit de univers.", icon:"🌌", tip:"Simte picioarele pe pământ, conectează-te cu solul", desc:"Sentimentul de siguranță existențială reduce hipervigilența sistemului nervos." },
+  { id:14, text:"Eliberez orice tensiune din corpul meu cu fiecare expirație.", icon:"💨", tip:"La fiecare expirație, relaxează conștient umerii", desc:"Corpul stochează stresul. Eliberarea conștientă prin respirație este terapeutică." },
+  { id:15, text:"Provocările din viața mea mă fac mai puternic, nu mă distrug.", icon:"⚡", tip:"Gândește-te la o provocare ce te-a crescut", desc:"Creșterea post-traumatică este un fenomen real și documentat psihologic." },
+  { id:16, text:"Am resursele interioare necesare pentru a face față oricărei situații.", icon:"🎒", tip:"Listează 5 resurse pe care le ai deja", desc:"Identificarea resurselor personale crește sentimentul de auto-eficacitate." },
+  { id:17, text:"Nu am nevoie de perfecțiune pentru a fi bine.", icon:"🌸", tip:"Celebrează un progres mic de azi", desc:"Perfecționismul este un factor major de anxietate. Progresul bate perfecțiunea." },
+  { id:18, text:"Îmi permit să fiu uman, cu greșeli și cu lecții.", icon:"🤍", tip:"Vorbește-ți ca unui prieten bun", desc:"Auto-compasiunea reduce auto-critica și anxietatea asociată ei." },
+  { id:19, text:"Fiecare moment dificil va trece. Nimic nu este permanent.", icon:"🌅", tip:"Amintește-ți: 'Și aceasta va trece'", desc:"Impermanența este o lege universală. Conștiența ei aduce eliberare." },
+  { id:20, text:"Mă detașez de scenariile negative pe care mintea le creează.", icon:"🎭", tip:"Etichetează gândul: 'Acesta este un scenariu catastrofic'", desc:"Catastrofizarea este un tipar cognitiv care poate fi observat și redus." },
+  { id:21, text:"Aleg să mă concentrez pe ceea ce pot controla acum.", icon:"🎯", tip:"Scrie un singur lucru pe care îl poți face acum", desc:"Focusul pe sfera de control reduce anxietatea și crește eficiența." },
+  { id:22, text:"Sunt mai calm decât credeam. Mă conectez la liniștea din interiorul meu.", icon:"🏔️", tip:"Găsește liniștea dintre două respirații", desc:"Există întotdeauna un spațiu de calm interior, indiferent de circumstanțe." },
+  { id:23, text:"Nu trebuie să am toate răspunsurile. Este în regulă să nu știu.", icon:"❓", tip:"Spune 'Nu știu și asta este în regulă'", desc:"Toleranța la incertitudine se antrenează și reduce anxietatea generalizată." },
+  { id:24, text:"Viitorul este deschis și plin de posibilități bune.", icon:"🌈", tip:"Vizualizează o zi bună din viitorul tău", desc:"Redirecționarea atenției spre posibilități pozitive recalibrează perspectiva." },
+  { id:25, text:"Relaxarea este starea mea naturală. Revin la ea cu ușurință.", icon:"🛋️", tip:"Tensionează și relaxează fiecare mușchi pe rând", desc:"Relaxarea progresivă musculară este una dintre cele mai eficiente tehnici anti-anxietate." },
+  { id:26, text:"Îmi ascult corpul și îi ofer ce are nevoie: odihnă, mișcare, dragoste.", icon:"💚", tip:"Întreabă corpul tău: 'De ce ai nevoie acum?'", desc:"Somatic awareness — conștientizarea semnalelor corporale — reduce stresul cronic." },
+  { id:27, text:"Sunt capabil să gestionez incertitudinea cu grație.", icon:"🌊", tip:"Practică să lași o situație nerezolvată timp de 10 min", desc:"Grația în fața incertitudinii se cultivă prin expunere graduală controlată." },
+  { id:28, text:"Fiecare zi îmi aduce o nouă șansă de a fi bine.", icon:"☀️", tip:"Dimineața, spune: 'Astăzi aleg să fiu bine'", desc:"Fiecare zi este o oportunitate de resetare și de alegeri noi." },
+  { id:29, text:"Mă eliberez de povara grijilor care nu îmi aparțin.", icon:"🎈", tip:"Vizualizează că eliberezi un balon cu grijile tale", desc:"Preluarea responsabilității pentru emoțiile altora este o sursă majoră de anxietate." },
+  { id:30, text:"Sunt înconjurat de sprijin, chiar și atunci când nu îl văd.", icon:"🤝", tip:"Gândește-te la cineva care te susține", desc:"Conștientizarea rețelei de suport reduce sentimentul de izolare și vulnerabilitate." },
+  { id:31, text:"Acceptarea acestui moment îmi aduce pace instantanee.", icon:"☯️", tip:"Spune 'Da' a ceea ce este, chiar și dacă e greu", desc:"Acceptarea radicală (DBT) este o tehnică puternică de reducere a suferinței inutile." },
+  { id:32, text:"Frica îmi arată unde am nevoie de mai multă dragoste față de mine.", icon:"🔦", tip:"Întreabă frica: 'Ce vrei să îmi spui?'", desc:"Frica ca mesager, nu ca dușman — o schimbare de perspectivă transformatoare." },
+  { id:33, text:"Mintea mea este un aliat, nu un dușman. O antrenez cu blândețe.", icon:"🧩", tip:"Mulțumește-i minții tale pentru că încearcă să te protejeze", desc:"Relația cu propria minte se poate transforma prin practică și intenție." },
+  { id:34, text:"Îmi permit să greșesc și să învăț fără să mă pedepsesc.", icon:"📚", tip:"Transformă o greșeală recentă într-o lecție scrisă", desc:"Auto-pedepsirea prelungită crește cortizolul și anxietatea. Lecția o înlocuiește." },
+  { id:35, text:"Respirând conștient, îmi resetez sistemul nervos.", icon:"🔄", tip:"4-7-8: Inspiră 4, ține 7, expiră 8 secunde", desc:"Respirația 4-7-8 activează puternic sistemul parasimpatic în 2-3 minute." },
+  { id:36, text:"Sunt în pace cu ceea ce nu pot schimba.", icon:"🪨", tip:"Scrie 3 lucruri pe care nu le poți controla și acceptă-le", desc:"Serenitatea provine din diferențierea dintre ceea ce putem și ce nu putem controla." },
+  { id:37, text:"Fiecare moment de anxietate este o invitație spre creștere.", icon:"🌱", tip:"Întreabă: 'Ce mă învață această anxietate?'", desc:"Reframingul anxietății ca oportunitate activează o perspectivă de creștere (growth mindset)." },
+  { id:38, text:"Aleg curajul în locul fricii, pas cu pas.", icon:"👣", tip:"Fă un singur pas mic astăzi spre ceea ce te teme", desc:"Curajul nu este absența fricii, ci acțiunea în prezența ei." },
+  { id:39, text:"Îmi construiesc liniștea interioară zi de zi.", icon:"🏗️", tip:"O practică mică zilnică valorează mai mult decât una mare rară", desc:"Liniștea interioară este o abilitate care se construiește prin practică consistentă." },
+  { id:40, text:"Sunt suficient de puternic pentru ziua de astăzi.", icon:"⚔️", tip:"Nu te gândi la tot viitorul, ci doar la azi", desc:"Focusul pe o singură zi reduce copleșeala și crește capacitatea de acțiune." },
+  // INCREDERE 41-100
+  { id:41, text:"Cred în mine și în capacitățile mele.", icon:"⭐", tip:"Scrie 3 lucruri în care ești bun", desc:"Credința în sine este fundamentul oricărei realizări. Se cultivă prin dovezi și practică." },
+  { id:42, text:"Sunt valoros exact așa cum sunt, în acest moment.", icon:"💎", tip:"Privește-te în oglindă și spune: 'Te văd și te accept'", desc:"Valoarea ta nu este condiționată de performanță, aspectul fizic sau aprobarea altora." },
+  { id:43, text:"Vocea mea contează și merită să fie auzită.", icon:"🎤", tip:"Exprimă o opinie astăzi, chiar și una mică", desc:"Exprimarea autentică întărește identitatea și stima de sine." },
+  { id:44, text:"Sunt mândru de cine am devenit și de drumul parcurs.", icon:"🏆", tip:"Scrie 5 lucruri pentru care ești mândru de tine", desc:"Recunoașterea propriei evoluții hrănește stima de sine organică și durabilă." },
+  { id:45, text:"Am o perspectivă unică pe care lumea are nevoie să o audă.", icon:"🌍", tip:"Împărtășește un gând autentic cu cineva azi", desc:"Unicitatea ta nu este un deficit — este contribuția ta specifică la lume." },
+  { id:46, text:"Mă ridic după fiecare cădere, mai înțelept și mai puternic.", icon:"🦅", tip:"Gândește-te la o cădere din care ai ieșit mai puternic", desc:"Reziliența — capacitatea de a reveni după adversitate — se construiește, nu te naști cu ea." },
+  { id:47, text:"Succesul meu nu amenință pe nimeni. Îmi permit să strălucesc.", icon:"✨", tip:"Vizualizează-te strălucind fără vinovăție", desc:"Sindromul impostorului și vinovăția succesului sunt tipare care pot fi depășite." },
+  { id:48, text:"Sunt capabil să ating obiectivele pe care mi le propun.", icon:"🎯", tip:"Scrie un obiectiv mic și fă primul pas azi", desc:"Auto-eficacitatea crește cu fiecare mic succes. Începe mic, crește constant." },
+  { id:49, text:"Meresc iubire, respect și bunătate, în primul rând de la mine.", icon:"💗", tip:"Pune mâna pe inimă și respiră adânc de 3 ori", desc:"Auto-compasiunea este baza sănătății emoționale și a relațiilor sănătoase." },
+  { id:50, text:"Nu am nevoie de aprobarea altora pentru a mă simți bine.", icon:"🔓", tip:"Ia o decizie azi fără să ceri validarea nimănui", desc:"Dependența de validare externă reduce autonomia și stima de sine. Libertatea e interioară." },
+  { id:51, text:"Greșelile mele nu mă definesc. Lecțiile din ele mă modelează.", icon:"🎓", tip:"Rescrie o greșeală ca pe o lecție valoroasă", desc:"Identitatea nu se construiește din eșecuri, ci din felul în care răspunzi la ele." },
+  { id:52, text:"Sunt în continuă creștere și evoluție. Mă mândresc cu progresul meu.", icon:"📈", tip:"Compară-te cu tine de acum un an", desc:"Growth mindset — credința că poți crește — este predictor al succesului pe termen lung." },
+  { id:53, text:"Am dreptul să ocup spațiu în această lume.", icon:"🌟", tip:"Stai drept, respiră adânc și ocupă spațiu fizic", desc:"Postura deschisă influențează starea mentală și sentimentul de putere personală." },
+  { id:54, text:"Sunt demn de tot binele care vine în viața mea.", icon:"🎁", tip:"Primește un compliment fără să îl respingi", desc:"Demnitatatea de a primi bine este la fel de importantă ca dăruirea lui." },
+  { id:55, text:"Încrederea mea crește cu fiecare pas mic pe care îl fac.", icon:"🪜", tip:"Fă un lucru mic care te scoate din zona de confort", desc:"Încrederea în sine se construiește prin acțiune, nu prin gândire. Mișcarea e cheia." },
+  { id:56, text:"Mă compar doar cu versiunea de ieri a mea.", icon:"📅", tip:"Întreabă-te: 'Sunt mai bun decât ieri?'", desc:"Comparația socială reduce stima de sine. Competiția cu sine crește motivația sănătoasă." },
+  { id:57, text:"Talentele și abilitățile mele sunt reale și valoroase.", icon:"🎨", tip:"Scrie 3 abilități pe care le ai și pe care altii nu le au", desc:"Identificarea și recunoașterea talentelor proprii construiește o identitate solidă." },
+  { id:58, text:"Îmi asum responsabilitatea vieții mele cu mândrie și curaj.", icon:"🎖️", tip:"Ia o decizie astăzi din propria voință, nu din frică", desc:"Locus of control intern — sentimentul că tu îți controlezi viața — este esențial pentru wellbeing." },
+  { id:59, text:"Sunt o persoană care inspiră și aduce valoare în jur.", icon:"💫", tip:"Fă un gest mic de bunătate pentru cineva azi", desc:"A aduce valoare altora întărește propriul sentiment de scop și valoare." },
+  { id:60, text:"Limitele mele sunt oneste și sănătoase. Le respect cu fermitate.", icon:"🛡️", tip:"Practică să spui 'nu' la ceva mic astăzi", desc:"Limitele sănătoase sunt un act de respect față de sine și față de ceilalți." },
+  { id:61, text:"Sunt un om puternic, capabil și plin de resurse.", icon:"🔋", tip:"Listează 5 resurse pe care le ai disponibile acum", desc:"Recunoașterea resurselor proprii activează sentimentul de competență și putere." },
+  { id:62, text:"Îmi merit succesul. Nu este noroc, este munca mea.", icon:"🏅", tip:"Recunoaște o realizare recentă și dă-ți credit", desc:"Atribuirea succesului efortului propriu, nu norocului, crește auto-eficacitatea." },
+  { id:63, text:"Sunt sigur pe mine chiar și în situații noi sau dificile.", icon:"⚓", tip:"Amintește-ți o situație nouă în care te-ai descurcat", desc:"Istoricul personal de adaptare este cea mai bună dovadă a capacității tale de a face față." },
+  { id:64, text:"Îmi accept corpul și mintea cu dragoste și recunoștință.", icon:"🫂", tip:"Mulțumește-i corpului tău pentru tot ce face pentru tine", desc:"Body neutrality și body positivity reduc stresul legat de imagine și cresc wellbeing-ul." },
+  { id:65, text:"Merită să fii fericit fără să justifici de ce.", icon:"😊", tip:"Fă azi un lucru care te face fericit, fără motiv", desc:"Fericirea nu trebuie câștigată sau justificată. Este un drept fundamental." },
+  { id:66, text:"Sunt autentic și asta este cel mai mare cadou al meu.", icon:"🎭", tip:"Fii sincer în cel puțin o interacțiune azi", desc:"Autenticitatea reduce anxietatea socială și atrage relații mai profunde și semnificative." },
+  { id:67, text:"Am curajul să spun nu atunci când este necesar.", icon:"✋", tip:"Identifică un 'nu' pe care trebuie să îl spui", desc:"Asertivitatea — capacitatea de a exprima limite — este o abilitate socială esențială." },
+  { id:68, text:"Mă prețuiesc suficient încât să aleg oameni și situații sănătoase.", icon:"🌺", tip:"Evaluează o relație: îți aduce energie sau ți-o ia?", desc:"Auto-stima sănătoasă ghidează alegerile spre medii și relații care te susțin." },
+  { id:69, text:"Fiecare zi este o dovadă că sunt capabil să continui.", icon:"🌄", tip:"Onorează-te pentru că ești aici, astăzi", desc:"Perseverența zilnică, oricât de mică, este o formă de curaj." },
+  { id:70, text:"Îmi dau voie să primesc complimente și apreciere.", icon:"💝", tip:"Azi, la un compliment, spune doar 'Mulțumesc'", desc:"Capacitatea de a primi apreciere fără a o respinge face parte din stima de sine sănătoasă." },
+  { id:71, text:"Sunt mândru de curajul cu care înfrunt lucrurile grele.", icon:"🦁", tip:"Gândește-te la ceva greu pe care l-ai înfruntat recent", desc:"Recunoașterea propriului curaj întărește identitatea de om puternic și capabil." },
+  { id:72, text:"Valoarea mea nu depinde de productivitate sau de performanță.", icon:"🌿", tip:"Odihneste-te azi fără vinovăție", desc:"Valoarea umană este intrinsecă, nu condiționată de realizări. Tu ești suficient." },
+  { id:73, text:"Îmi ascult intuiția. Știe drumul corect pentru mine.", icon:"🔮", tip:"Ascultă primul impuls, înainte de supraanalizare", desc:"Intuiția este înțelepciunea experienței procesată rapid de creier. Merită să fie ascultată." },
+  { id:74, text:"Sunt un lider în propria mea viață.", icon:"👑", tip:"Ia azi o decizie importantă cu fermitate", desc:"Leadership-ul personal înseamnă să îți asumi direcția vieții tale cu intenție." },
+  { id:75, text:"Am tot ce îmi trebuie pentru a începe. Acum este momentul.", icon:"🚀", tip:"Fă primul pas la un proiect pe care l-ai amânat", desc:"Procrastinarea este adesea cauzată de așteptarea condițiilor perfecte care nu vor veni." },
+  { id:76, text:"Îmi permit să visez mare și să acționez cu consecvență.", icon:"🌠", tip:"Scrie cel mai mare vis al tău și un pas mic spre el", desc:"Visele mari combinate cu acțiuni mici consistente produc rezultate extraordinare." },
+  { id:77, text:"Sunt recunoscător pentru tot ceea ce sunt și tot ceea ce am.", icon:"🙏", tip:"Scrie 3 lucruri pentru care ești recunoscător azi", desc:"Gratitudinea zilnică recalibrează creierul spre pozitiv și crește wellbeing-ul cu 25%." },
+  { id:78, text:"Prezența mea face diferența în viețile celor din jur.", icon:"🌟", tip:"Gândește-te la cineva pe care l-ai influențat pozitiv", desc:"Impactul nostru asupra altora este adesea mai mare decât realizăm." },
+  { id:79, text:"Pot cere ajutor și asta este un semn de forță, nu de slăbiciune.", icon:"🤲", tip:"Cere ajutor pentru ceva mic astăzi", desc:"Cercetările arată că cei care cer ajutor sunt percepuți ca mai competenți și mai de încredere." },
+  { id:80, text:"Sunt exact acolo unde trebuie să fiu în viața mea.", icon:"📍", tip:"Acceptă stadiul tău actual cu blândețe", desc:"Compararea traseului tău cu al altora ignoră contextul și unicitatea fiecărei vieți." },
+  { id:81, text:"Fiecare experiență m-a pregătit pentru acest moment.", icon:"🗝️", tip:"Gândește-te cum o experiență dificilă te-a pregătit", desc:"Perspectiva retrospectivă revelează sensul în experiențele care par lipsite de rost." },
+  { id:82, text:"Îmi respect valorile și trăiesc în acord cu ele.", icon:"🧭", tip:"Scrie top 3 valori ale tale și o acțiune aliniată cu ele", desc:"Congruența dintre valori și acțiuni produce un sentiment profund de integritate și pace." },
+  { id:83, text:"Sunt plin de energie, motivație și entuziasm.", icon:"⚡", tip:"Dimineața, mișcă-te 5 minute înainte de telefon", desc:"Mișcarea fizică matinală eliberează dopamină și serotonină, activând starea de energie." },
+  { id:84, text:"Îmi construiesc viitorul dorit cu fiecare alegere de azi.", icon:"🏗️", tip:"Ia o decizie azi care servește versiunea ta de mâine", desc:"Fiecare alegere mică de azi compusă în timp produce rezultate transformatoare." },
+  { id:85, text:"Sunt un om bun care face eforturi sincere. Asta este suficient.", icon:"💛", tip:"Recunoaște efortul tău de azi, indiferent de rezultat", desc:"Efortul sincer, independent de rezultat, merită recunoaștere și respect față de sine." },
+  { id:86, text:"Curajul meu este mai mare decât îndoiala mea.", icon:"🔥", tip:"Acționează pe o îndoială: fa ceea ce te îndoiești că poți", desc:"Acțiunea înfrânge îndoiala mai repede decât orice gând. Mișcarea produce claritate." },
+  { id:87, text:"Fiecare obstacol este o oportunitate deghizată.", icon:"🎭", tip:"Rescrie un obstacol actual ca pe o oportunitate", desc:"Reframingul cognitiv transformă percepția și activează o stare de problem-solving." },
+  { id:88, text:"Sunt demn de relații sănătoase, pline de respect și iubire.", icon:"💞", tip:"Evaluează o relație: te respectă? Te susține?", desc:"Demnitatatea relațională se manifestă prin ce tolerezi și ce alegi în relații." },
+  { id:89, text:"Îmi admir propria rezistență și determinare.", icon:"🏋️", tip:"Fă o listă cu momente în care ai persistat", desc:"Auto-admirația sănătoasă, bazată pe dovezi reale, construiește o stimă de sine solidă." },
+  { id:90, text:"Am reușit lucruri dificile înainte. Pot reuși din nou.", icon:"🎖️", tip:"Reamintește-ți 3 realizări dificile din trecut", desc:"Istoricul personal de succes este cel mai puternic predictor al succesului viitor." },
+  { id:91, text:"Sunt mai mult decât gândurile mele negative despre mine.", icon:"🌅", tip:"Observă gândul negativ și adaugă: 'Dar și...'", desc:"Identitatea este mai complexă și mai bogată decât narațiunea critică interioară." },
+  { id:92, text:"Generozitatea față de mine este la fel de importantă ca față de ceilalți.", icon:"🎀", tip:"Fă azi ceva drăguț pentru tine, fără motiv", desc:"Lipsa auto-compasiunii duce la epuizare și resentiment. Auto-grija este esențială." },
+  { id:93, text:"Îmi apar drepturile cu calm și fermitate.", icon:"⚖️", tip:"Exersează o propoziție asertivă: 'Eu simt... și am nevoie de...'", desc:"Asertivitatea calmă comunică respect față de sine fără agresivitate sau pasivitate." },
+  { id:94, text:"Sunt o sursă de inspirație pentru cei care mă cunosc.", icon:"💡", tip:"Gândește-te la cineva pe care l-ai inspirat fără să știi", desc:"Influența noastră pozitivă asupra altora este adesea invizibilă pentru noi." },
+  { id:95, text:"Progresul, nu perfecțiunea, este scopul meu.", icon:"📊", tip:"Celebrează 1% progres față de ieri", desc:"Progresul de 1% zilnic produce o îmbunătățire de 37x în decursul unui an." },
+  { id:96, text:"Îmi permit să fiu văzut, auzit și apreciat.", icon:"🌺", tip:"Fii prezent și vizibil în cel puțin o interacțiune azi", desc:"Vulnerabilitatea autentică — a te lăsa văzut — stă la baza conexiunii reale." },
+  { id:97, text:"Sunt exact destul de bun pentru viața pe care o construiesc.", icon:"🏡", tip:"Spune-ți: 'Sunt suficient pentru azi'", desc:"Suficiența nu înseamnă stagnare — înseamnă a acționa dintr-un loc de completitudine." },
+  { id:98, text:"Îmi trăiesc viața după regulile mele, cu respect față de ceilalți.", icon:"🗺️", tip:"Identifică o regulă proprie, nu preluată de la altcineva", desc:"Autonomia — trăirea conform valorilor proprii — este esențială pentru wellbeing psihologic." },
+  { id:99, text:"Fiecare dimineață este o nouă șansă de a fi cel mai bun eu.", icon:"🌞", tip:"Dimineața, întreabă-te: 'Cum poate arăta cea mai bună zi a mea?'", desc:"Intenția de dimineață ghidează subconștientul spre alegeri aliniate cu scopul tău." },
+  { id:100, text:"Mă iubesc, mă accept și mă susțin necondiționat.", icon:"❤️", tip:"Pune mâna pe inimă și spune-ți asta cu voce tare", desc:"Iubirea de sine necondiționată este fundamentul sănătății mentale și al tuturor relațiilor sănătoase." }
+];
+
+// Theme distribution: mix aleatoriu cu ~34 violet, ~33 rose, ~33 teal
+const themes = [];
+for(let i=0;i<34;i++) themes.push('v');
+for(let i=0;i<33;i++) themes.push('r');
+for(let i=0;i<33;i++) themes.push('t');
+// shuffle
+for(let i=themes.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [themes[i],themes[j]]=[themes[j],themes[i]];
+}
+
+const ornaments = { v:'✦', r:'❋', t:'◈' };
+
+function buildCards(filter='all') {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const counter = document.getElementById('counter');
+
+  let shown = 0;
+  afirmatii.forEach((a, idx) => {
+    const theme = themes[idx];
+    if(filter !== 'all' && filter !== theme) return;
+    shown++;
+
+    const scene = document.createElement('div');
+    scene.className = `card-scene ${theme}`;
+    scene.style.animationDelay = (shown * 0.04) + 's';
+
+    const qrId = `qr-${a.id}`;
+
+    scene.innerHTML = `
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <div class="card-num">Afirmație · ${String(a.id).padStart(2,'0')}</div>
+          <div class="card-ornament">${ornaments[theme]}</div>
+          <p class="card-text">„${a.text}"</p>
+          <div class="card-divider"></div>
+          <div class="card-brand">Puterea Prezentului</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-icon">${a.icon}</div>
+          <div class="back-title">Practică</div>
+          <p class="back-desc">${a.desc}</p>
+          <div class="back-tip">💡 ${a.tip}</div>
+          <div class="qr-wrap">
+            <div class="qr-box" id="${qrId}"></div>
+            <div class="qr-label">@alexandraa.dianaaa</div>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(scene);
+
+    // Generate QR after DOM insert
+    setTimeout(() => {
+      const el = document.getElementById(qrId);
+      if(el && !el.dataset.done) {
+        el.dataset.done = '1';
+        new QRCode(el, {
+          text: INSTAGRAM,
+          width: 56, height: 56,
+          colorDark: theme === 'v' ? '#4a2070' : theme === 'r' ? '#c96070' : '#0d4a5c',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      }
+    }, 100);
+  });
+
+  const labels = { all: 'toate 100', v:'cele 34 Violet', r:'cele 33 Roz', t:'cele 33 Teal' };
+  counter.textContent = `Afișând ${labels[filter]} de carduri`;
+}
+
+function filterCards(f) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  buildCards(f);
+}
+
+window.addEventListener('DOMContentLoaded', () => buildCards('all'));
+</script>
+</body>
+</html>

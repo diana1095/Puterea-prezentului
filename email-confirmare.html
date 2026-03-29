@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Confirmare Comandă – Puterea Prezentului</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#f0ebe8; font-family:'Jost',sans-serif; padding:40px 20px; }
+
+.preview-label {
+  text-align:center; font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:#999; margin-bottom:24px;
+}
+
+/* EMAIL WRAPPER */
+.email-wrap {
+  max-width:600px; margin:0 auto;
+  background:#fff; border-radius:16px; overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.12);
+}
+
+/* HEADER */
+.email-header {
+  background:linear-gradient(145deg, #1e0f3a 0%, #2d1b4e 50%, #3d2468 100%);
+  padding:48px 40px 36px; text-align:center; position:relative; overflow:hidden;
+}
+.email-header::before {
+  content:''; position:absolute; top:-50px; right:-50px;
+  width:180px; height:180px;
+  background:radial-gradient(circle,rgba(201,169,110,0.2) 0%,transparent 70%);
+  border-radius:50%;
+}
+.email-header::after {
+  content:''; position:absolute; bottom:-40px; left:-40px;
+  width:160px; height:160px;
+  background:radial-gradient(circle,rgba(74,155,142,0.15) 0%,transparent 70%);
+  border-radius:50%;
+}
+.email-logo {
+  font-family:'Cormorant Garamond',serif; font-weight:600;
+  font-size:1rem; letter-spacing:0.25em; text-transform:uppercase;
+  color:rgba(201,169,110,0.8); display:block; margin-bottom:16px;
+  position:relative; z-index:1;
+}
+.email-header h1 {
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  font-size:2.2rem; letter-spacing:0.1em; color:#fdf8f2;
+  position:relative; z-index:1; margin-bottom:6px;
+}
+.email-header p {
+  font-size:0.78rem; color:rgba(255,255,255,0.5); letter-spacing:0.1em;
+  position:relative; z-index:1;
+}
+
+/* BODY */
+.email-body { padding:40px; }
+
+.greeting {
+  font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:300;
+  color:#2d1b4e; margin-bottom:16px; letter-spacing:0.05em;
+}
+.intro-text {
+  font-size:0.85rem; font-weight:300; color:#666; line-height:1.8;
+  margin-bottom:28px;
+}
+
+/* AFIRMATIE ZILEI */
+.affirmation-box {
+  background:linear-gradient(145deg,#1e0f3a,#2d1b4e);
+  border-radius:14px; padding:28px 24px; text-align:center;
+  margin-bottom:28px; position:relative; overflow:hidden;
+}
+.affirmation-box::before {
+  content:''; position:absolute; top:-30px; right:-30px;
+  width:120px; height:120px;
+  background:radial-gradient(circle,rgba(201,169,110,0.2) 0%,transparent 70%);
+  border-radius:50%;
+}
+.aff-label {
+  font-size:0.6rem; letter-spacing:0.4em; text-transform:uppercase;
+  color:rgba(201,169,110,0.7); margin-bottom:12px; position:relative; z-index:1;
+}
+.aff-orn { font-size:1.5rem; margin-bottom:10px; position:relative; z-index:1; }
+.aff-text {
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300;
+  font-size:1.1rem; color:#f0e8ff; line-height:1.7;
+  position:relative; z-index:1;
+}
+
+/* ORDER DETAILS */
+.section-label {
+  font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:#c9a96e; margin-bottom:14px; display:block;
+}
+.order-table {
+  width:100%; border-collapse:collapse; margin-bottom:28px;
+}
+.order-table tr { border-bottom:1px solid #f0ebe8; }
+.order-table td {
+  padding:12px 0; font-size:0.8rem; color:#555;
+}
+.order-table td:first-child { color:#999; font-weight:300; width:45%; }
+.order-table td:last-child { font-weight:400; color:#333; text-align:right; }
+.order-table .total-row td { font-weight:500; color:#2d1b4e; padding-top:16px; }
+.order-table .total-row td:last-child {
+  font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#7b5ea7;
+}
+
+/* NEXT STEPS */
+.steps { margin-bottom:28px; }
+.step {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:14px 0; border-bottom:1px solid #f5f0eb;
+}
+.step-num {
+  width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,#7b3fa0,#c96070);
+  color:#fff; font-size:0.7rem; font-weight:500;
+  display:flex; align-items:center; justify-content:center;
+}
+.step-content { flex:1; }
+.step-title { font-size:0.82rem; font-weight:500; color:#333; margin-bottom:3px; }
+.step-desc { font-size:0.75rem; font-weight:300; color:#888; line-height:1.6; }
+
+/* AFFIRMATION PRACTICE */
+.practice-box {
+  background:linear-gradient(135deg,#fff5f2,#fde8e0);
+  border-radius:14px; padding:24px; margin-bottom:28px;
+  border-left:3px solid #c96070;
+}
+.practice-title {
+  font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:600;
+  color:#c96070; margin-bottom:10px;
+}
+.practice-text { font-size:0.78rem; font-weight:300; color:#7a3a45; line-height:1.8; }
+
+/* CTA */
+.cta-section { text-align:center; margin-bottom:28px; }
+.cta-btn {
+  display:inline-block; font-family:'Jost',sans-serif;
+  font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:14px 32px; border-radius:30px; text-decoration:none;
+  background:linear-gradient(135deg,#7b3fa0,#c96070);
+  color:#fff; box-shadow:0 6px 20px rgba(123,63,160,0.3);
+}
+
+/* FOOTER */
+.email-footer {
+  background:#f9f6f3; padding:28px 40px; text-align:center;
+  border-top:1px solid #ede8e3;
+}
+.footer-brand {
+  font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:600;
+  letter-spacing:0.15em; color:#2d1b4e; margin-bottom:6px;
+}
+.footer-ig { font-size:0.7rem; color:#c9a96e; letter-spacing:0.15em; margin-bottom:10px; }
+.footer-copy { font-size:0.62rem; color:#bbb; letter-spacing:0.08em; }
+
+/* COPY BTN */
+.copy-area { text-align:center; margin-top:20px; }
+.copy-btn {
+  font-family:'Jost',sans-serif; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:10px 24px; border-radius:20px; cursor:pointer;
+  border:1px solid rgba(123,94,167,0.35); color:#7b5ea7;
+  background:rgba(123,94,167,0.06); transition:all 0.3s;
+}
+.copy-btn:hover { background:rgba(123,94,167,0.14); }
+</style>
+</head>
+<body>
+
+<p class="preview-label">✦ Preview Email Confirmare Comandă ✦</p>
+
+<div class="email-wrap">
+
+  <!-- HEADER -->
+  <div class="email-header">
+    <span class="email-logo">✦ Puterea Prezentului</span>
+    <h1>Comandă Confirmată!</h1>
+    <p>Mulțumim că ai ales să investești în tine 💜</p>
+  </div>
+
+  <!-- BODY -->
+  <div class="email-body">
+
+    <p class="greeting">Bună, [Prenume]! 🌟</p>
+    <p class="intro-text">
+      Comanda ta a fost primită cu succes și o vom procesa cu drag. Suntem atât de bucuroși că „Puterea Prezentului" va ajunge în mâinile tale — știm că va face o diferență reală în fiecare zi a ta.
+    </p>
+
+    <!-- Afirmație -->
+    <div class="affirmation-box">
+      <div class="aff-label">✦ Afirmația zilei ✦</div>
+      <div class="aff-orn">✦</div>
+      <div class="aff-text">„Fiecare pas mic spre creștere merită să fie celebrat. Ești pe drumul cel bun."</div>
+    </div>
+
+    <!-- Order Details -->
+    <span class="section-label">📦 Detalii Comandă</span>
+    <table class="order-table">
+      <tr><td>Număr comandă</td><td>#PP-2025-[ID]</td></tr>
+      <tr><td>Data comenzii</td><td>[Data]</td></tr>
+      <tr><td>Pachet ales</td><td>[Pachet]</td></tr>
+      <tr><td>Livrare</td><td>Curier rapid · 3–5 zile lucrătoare</td></tr>
+      <tr><td>Adresă livrare</td><td>[Adresa clientului]</td></tr>
+      <tr><td>Metodă plată</td><td>Ramburs / Transfer bancar</td></tr>
+      <tr class="total-row"><td>Total de plată</td><td>[PREȚ] RON</td></tr>
+    </table>
+
+    <!-- Next Steps -->
+    <span class="section-label">🗓️ Ce urmează</span>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Confirmare în 24h</div>
+          <div class="step-desc">Te vom contacta pe Instagram sau email pentru a confirma detaliile comenzii tale.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Pregătire & Ambalare</div>
+          <div class="step-desc">Comanda ta va fi pregătită cu grijă și ambalată premium în 1–2 zile lucrătoare.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Expedierea Comenzii</div>
+          <div class="step-desc">Vei primi numărul de urmărire AWB odată ce comanda a fost predată curierului.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Livrare la Tine Acasă 🎉</div>
+          <div class="step-desc">Bucură-te de colecția ta! Fiecare card este creat cu iubire și intenție pentru tine.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Practice tip -->
+    <div class="practice-box">
+      <div class="practice-title">💡 Cum să folosești cardurile</div>
+      <div class="practice-text">
+        <strong>Dimineața:</strong> Trage un card aleatoriu și citește afirmația cu voce tare de 3 ori.<br><br>
+        <strong>Ziua:</strong> Ține cardul la tine sau fotografiază-l ca wallpaper pe telefon.<br><br>
+        <strong>Seara:</strong> Reflectează la afirmația zilei — cum s-a manifestat ea în ziua ta?<br><br>
+        Scanează codul QR de pe verso pentru conținut suplimentar pe Instagram! 📱
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <a href="https://www.instagram.com/alexandraa.dianaaa" class="cta-btn">
+        Urmărește @alexandraa.dianaaa
+      </a>
+    </div>
+
+    <p style="font-size:0.78rem;font-weight:300;color:#888;line-height:1.8;text-align:center;">
+      Ai întrebări? Scrie-ne direct pe Instagram<br>
+      <a href="https://www.instagram.com/alexandraa.dianaaa" style="color:#c9a96e;text-decoration:none;">@alexandraa.dianaaa</a>
+    </p>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="email-footer">
+    <div class="footer-brand">✦ Puterea Prezentului</div>
+    <div class="footer-ig">@alexandraa.dianaaa</div>
+    <div class="footer-copy">© 2025 Puterea Prezentului · Toate drepturile rezervate<br>Ai primit acest email pentru că ai plasat o comandă pe site-ul nostru.</div>
+  </div>
+
+</div>
+
+<div class="copy-area">
+  <p style="font-size:0.72rem;color:#999;margin-bottom:12px;letter-spacing:0.1em;">Personalizează câmpurile marcate cu [brackets] pentru fiecare comandă</p>
+  <button class="copy-btn" onclick="this.textContent='✅ Copiat!'; setTimeout(()=>this.textContent='📋 Copiază HTML-ul emailului',2000)">
+    📋 Copiază HTML-ul emailului
+  </button>
+</div>
+
+</body>
+</html>

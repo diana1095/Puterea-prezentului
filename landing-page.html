@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puterea Prezentului – Colecție de Afirmații Psihologice</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a96e;
+  --cream: #fdf8f2;
+  --violet: #7b5ea7;
+  --rose: #c96070;
+  --teal: #4a9b8e;
+  --deep: #0e0820;
+}
+* { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+body { background:var(--deep); font-family:'Jost',sans-serif; color:var(--cream); overflow-x:hidden; }
+
+/* ── NAVBAR ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:18px 5%;
+  background:rgba(14,8,32,0.85); backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(201,169,110,0.12);
+}
+.nav-brand {
+  font-family:'Cormorant Garamond',serif; font-weight:600;
+  font-size:1.1rem; letter-spacing:0.15em; color:var(--cream);
+}
+.nav-links { display:flex; gap:28px; align-items:center; }
+.nav-links a {
+  font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.3s;
+}
+.nav-links a:hover { color:var(--gold); }
+.nav-cta {
+  font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:9px 22px; border-radius:30px; cursor:pointer;
+  border:1px solid rgba(201,169,110,0.4); color:var(--gold);
+  background:rgba(201,169,110,0.08); text-decoration:none;
+  transition:all 0.3s;
+}
+.nav-cta:hover { background:rgba(201,169,110,0.18); }
+
+/* ── HERO ── */
+.hero {
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:120px 5% 80px; text-align:center; position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(123,94,167,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(201,169,110,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(74,155,142,0.1) 0%, transparent 40%);
+}
+.hero-tag {
+  font-size:0.65rem; letter-spacing:0.45em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:20px; position:relative;
+  animation:fadeUp 1s ease forwards;
+}
+.hero-title {
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  font-size:clamp(3rem,8vw,6.5rem); letter-spacing:0.08em;
+  line-height:1.05; position:relative;
+  animation:fadeUp 1s ease forwards 0.2s; opacity:0;
+}
+.hero-title em { font-style:italic; color:var(--gold); }
+.hero-subtitle {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.4rem); font-weight:300;
+  color:rgba(255,255,255,0.55); letter-spacing:0.1em;
+  margin:16px 0 40px; position:relative;
+  animation:fadeUp 1s ease forwards 0.4s; opacity:0;
+}
+.hero-btns {
+  display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
+  position:relative;
+  animation:fadeUp 1s ease forwards 0.6s; opacity:0;
+}
+.btn-primary {
+  font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.2em;
+  text-transform:uppercase; padding:16px 36px; border-radius:50px;
+  background:linear-gradient(135deg,#7b3fa0,#c96070);
+  color:#fff; border:none; cursor:pointer; text-decoration:none;
+  box-shadow:0 8px 30px rgba(123,63,160,0.4); transition:all 0.3s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(123,63,160,0.5); }
+.btn-secondary {
+  font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.2em;
+  text-transform:uppercase; padding:15px 36px; border-radius:50px;
+  border:1px solid rgba(201,169,110,0.4); color:var(--gold);
+  background:rgba(201,169,110,0.06); cursor:pointer; text-decoration:none;
+  transition:all 0.3s;
+}
+.btn-secondary:hover { background:rgba(201,169,110,0.14); }
+
+.hero-stats {
+  display:flex; gap:40px; flex-wrap:wrap; justify-content:center;
+  margin-top:60px; position:relative;
+  animation:fadeUp 1s ease forwards 0.8s; opacity:0;
+}
+.stat { text-align:center; }
+.stat-num {
+  font-family:'Cormorant Garamond',serif; font-size:2.4rem; font-weight:300;
+  color:var(--gold); line-height:1; display:block;
+}
+.stat-label {
+  font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase;
+  color:rgba(255,255,255,0.4); margin-top:4px; display:block;
+}
+
+/* ── SECTION BASE ── */
+section { padding:100px 5%; }
+.section-tag {
+  font-size:0.65rem; letter-spacing:0.4em; text-transform:uppercase;
+  color:var(--gold); text-align:center; margin-bottom:14px; display:block;
+}
+.section-title {
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  font-size:clamp(2rem,4vw,3rem); text-align:center;
+  letter-spacing:0.1em; margin-bottom:12px;
+}
+.section-desc {
+  font-size:0.85rem; font-weight:300; color:rgba(255,255,255,0.5);
+  text-align:center; line-height:1.8; max-width:560px; margin:0 auto 60px;
+}
+.deco-line {
+  display:flex; align-items:center; gap:14px; max-width:200px; margin:0 auto 60px;
+}
+.deco-line span { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(201,169,110,0.35),transparent); }
+.deco-line em { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; color:rgba(201,169,110,0.5); }
+
+/* ── CARDS PREVIEW ── */
+.cards-preview { background:rgba(255,255,255,0.02); }
+.cards-row {
+  display:flex; gap:20px; justify-content:center; flex-wrap:wrap;
+  max-width:1100px; margin:0 auto;
+}
+.preview-card {
+  width:200px; height:280px; border-radius:14px; overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:24px 18px; position:relative; flex-shrink:0;
+  transition:transform 0.4s, box-shadow 0.4s;
+}
+.preview-card:hover { transform:translateY(-8px) rotate(1deg); }
+.preview-card.v {
+  background:linear-gradient(145deg,#2d1b4e,#4a2070,#7b3fa0);
+  border:1px solid rgba(201,169,110,0.3);
+  box-shadow:0 12px 40px rgba(123,94,167,0.4);
+}
+.preview-card.r {
+  background:linear-gradient(135deg,#f9ddd3,#f2b8a8,#e08878,#c96070);
+  box-shadow:0 12px 40px rgba(201,96,112,0.35);
+}
+.preview-card.t {
+  background:linear-gradient(150deg,#0d4a5c,#1a7a82,#4ab8a0);
+  box-shadow:0 12px 40px rgba(26,122,130,0.4);
+}
+.pc-orn { font-size:1.4rem; margin-bottom:12px; }
+.pc-text {
+  font-family:'Cormorant Garamond',serif; font-size:0.9rem;
+  font-style:italic; line-height:1.6; text-align:center;
+}
+.v .pc-text { color:#f0e8ff; }
+.r .pc-text { color:#fff; }
+.t .pc-text { color:#e8faf8; }
+.pc-div { width:28px; height:1px; margin:12px auto; }
+.v .pc-div { background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.r .pc-div { background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent); }
+.t .pc-div { background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent); }
+.pc-brand { font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase; }
+.v .pc-brand { color:rgba(201,169,110,0.55); }
+.r .pc-brand { color:rgba(255,255,255,0.45); }
+.t .pc-brand { color:rgba(255,255,255,0.4); }
+
+/* ── TEME ── */
+.teme-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px; max-width:1000px; margin:0 auto;
+}
+.tema-card {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px; padding:22px 18px; text-align:center;
+  transition:all 0.3s;
+}
+.tema-card:hover { background:rgba(201,169,110,0.07); border-color:rgba(201,169,110,0.25); transform:translateY(-4px); }
+.tema-icon { font-size:1.8rem; margin-bottom:10px; }
+.tema-name { font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:600; margin-bottom:6px; }
+.tema-count { font-size:0.65rem; letter-spacing:0.2em; color:rgba(201,169,110,0.6); }
+
+/* ── PACHETE ── */
+.pachete { background:rgba(255,255,255,0.02); }
+.pachete-grid {
+  display:flex; gap:24px; justify-content:center; flex-wrap:wrap;
+  max-width:1000px; margin:0 auto;
+}
+.pachet {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px; padding:36px 28px; text-align:center;
+  width:min(300px,90vw); transition:all 0.4s; position:relative;
+}
+.pachet:hover { transform:translateY(-6px); border-color:rgba(201,169,110,0.3); }
+.pachet.featured {
+  background:linear-gradient(145deg,rgba(123,94,167,0.15),rgba(201,169,110,0.08));
+  border-color:rgba(201,169,110,0.4);
+  box-shadow:0 20px 60px rgba(123,94,167,0.25);
+}
+.pachet-badge {
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase;
+  padding:5px 16px; border-radius:20px;
+  background:linear-gradient(135deg,#7b3fa0,#c96070);
+  color:#fff; white-space:nowrap;
+}
+.pachet-icon { font-size:2.4rem; margin-bottom:16px; }
+.pachet-name {
+  font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600;
+  margin-bottom:6px; letter-spacing:0.08em;
+}
+.pachet-desc { font-size:0.78rem; font-weight:300; color:rgba(255,255,255,0.5); line-height:1.7; margin-bottom:20px; }
+.pachet-features { list-style:none; margin-bottom:24px; text-align:left; }
+.pachet-features li {
+  font-size:0.75rem; font-weight:300; color:rgba(255,255,255,0.7);
+  padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex; align-items:center; gap:8px;
+}
+.pachet-features li::before { content:'✦'; color:var(--gold); font-size:0.6rem; }
+.pachet-price {
+  font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300;
+  color:var(--gold); line-height:1;
+}
+.pachet-price sup { font-size:1.2rem; vertical-align:super; }
+.pachet-price-note { font-size:0.65rem; color:rgba(255,255,255,0.35); margin:6px 0 20px; letter-spacing:0.1em; }
+.btn-order {
+  display:block; width:100%; font-family:'Jost',sans-serif;
+  font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:13px; border-radius:30px; cursor:pointer; text-decoration:none;
+  border:1px solid rgba(201,169,110,0.4); color:var(--gold);
+  background:rgba(201,169,110,0.08); transition:all 0.3s;
+}
+.btn-order:hover { background:rgba(201,169,110,0.18); }
+.btn-order.primary {
+  background:linear-gradient(135deg,#7b3fa0,#c96070);
+  border:none; color:#fff;
+  box-shadow:0 6px 24px rgba(123,63,160,0.35);
+}
+.btn-order.primary:hover { box-shadow:0 10px 30px rgba(123,63,160,0.5); }
+
+/* ── TESTIMONIALE ── */
+.testimoniale-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px; max-width:900px; margin:0 auto;
+}
+.testimonial {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px; padding:28px 24px;
+}
+.testimonial-stars { color:var(--gold); font-size:0.9rem; margin-bottom:14px; letter-spacing:4px; }
+.testimonial-text {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:1rem; line-height:1.7; color:rgba(255,255,255,0.75);
+  margin-bottom:18px;
+}
+.testimonial-author { font-size:0.7rem; letter-spacing:0.15em; color:rgba(201,169,110,0.7); }
+
+/* ── FAQ ── */
+.faq-list { max-width:680px; margin:0 auto; }
+.faq-item {
+  border-bottom:1px solid rgba(255,255,255,0.08); padding:22px 0; cursor:pointer;
+}
+.faq-q {
+  font-family:'Cormorant Garamond',serif; font-size:1.05rem;
+  font-weight:600; display:flex; justify-content:space-between;
+  align-items:center; gap:16px;
+}
+.faq-icon { color:var(--gold); transition:transform 0.3s; font-size:1.2rem; }
+.faq-a {
+  font-size:0.8rem; font-weight:300; color:rgba(255,255,255,0.55);
+  line-height:1.8; max-height:0; overflow:hidden; transition:max-height 0.4s ease, padding 0.3s;
+}
+.faq-item.open .faq-a { max-height:200px; padding-top:14px; }
+.faq-item.open .faq-icon { transform:rotate(45deg); }
+
+/* ── CTA FINAL ── */
+.cta-final {
+  text-align:center; position:relative; overflow:hidden;
+  background:linear-gradient(145deg,#1e0f3a,#2d1b4e,#1a2a4a);
+}
+.cta-final::before {
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 30% 50%,rgba(123,94,167,0.25) 0%,transparent 60%),
+    radial-gradient(ellipse at 70% 50%,rgba(201,169,110,0.1) 0%,transparent 60%);
+}
+.cta-final .section-title { position:relative; z-index:1; font-size:clamp(2rem,5vw,4rem); }
+.cta-final .section-desc { position:relative; z-index:1; }
+.cta-final .hero-btns { position:relative; z-index:1; }
+
+/* ── FOOTER ── */
+footer {
+  background:#080514; padding:40px 5%; text-align:center;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.footer-brand {
+  font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600;
+  letter-spacing:0.15em; color:var(--cream); margin-bottom:8px;
+}
+.footer-ig {
+  font-size:0.68rem; letter-spacing:0.25em; color:rgba(201,169,110,0.6);
+  margin-bottom:20px; display:block;
+}
+.footer-copy { font-size:0.65rem; color:rgba(255,255,255,0.2); letter-spacing:0.1em; }
+
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">✦ Puterea Prezentului</div>
+  <div class="nav-links">
+    <a href="#carduri">Carduri</a>
+    <a href="#teme">Teme</a>
+    <a href="#pachete">Pachete</a>
+    <a href="#faq">FAQ</a>
+    <a href="#comanda" class="nav-cta">Comandă</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-tag">✦ Colecție Premium de Afirmații Psihologice ✦</span>
+  <h1 class="hero-title">Puterea<br><em>Prezentului</em></h1>
+  <p class="hero-subtitle">1000 de carduri pentru sufletul tău</p>
+  <div class="hero-btns">
+    <a href="#comanda" class="btn-primary">Comandă acum</a>
+    <a href="#carduri" class="btn-secondary">Descoperă colecția</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">1000</span><span class="stat-label">Afirmații unice</span></div>
+    <div class="stat"><span class="stat-num">10</span><span class="stat-label">Teme psihologice</span></div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">Teme vizuale</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Impact zilnic</span></div>
+  </div>
+</section>
+
+<!-- CARDS PREVIEW -->
+<section class="cards-preview" id="carduri">
+  <span class="section-tag">✦ Designul Cardurilor</span>
+  <h2 class="section-title">3 Colecții Vizuale</h2>
+  <p class="section-desc">Fiecare card este creat cu atenție la detaliu — față cu afirmația, verso cu explicația psihologică și codul QR.</p>
+  <div class="cards-row">
+    <div class="preview-card v">
+      <div class="pc-orn">✦</div>
+      <p class="pc-text">„Sunt mai puternic decât frica mea."</p>
+      <div class="pc-div"></div>
+      <div class="pc-brand">Puterea Prezentului</div>
+    </div>
+    <div class="preview-card r">
+      <div class="pc-orn">❋</div>
+      <p class="pc-text">„Meresc iubire și bunătate de la mine."</p>
+      <div class="pc-div"></div>
+      <div class="pc-brand">Puterea Prezentului</div>
+    </div>
+    <div class="preview-card t">
+      <div class="pc-orn">◈</div>
+      <p class="pc-text">„Sunt în siguranță în acest moment."</p>
+      <div class="pc-div"></div>
+      <div class="pc-brand">Puterea Prezentului</div>
+    </div>
+    <div class="preview-card v" style="opacity:0.6;transform:scale(0.92)">
+      <div class="pc-orn">✦</div>
+      <p class="pc-text">„Liniștea mea este indestructibilă."</p>
+      <div class="pc-div"></div>
+      <div class="pc-brand">Puterea Prezentului</div>
+    </div>
+    <div class="preview-card r" style="opacity:0.6;transform:scale(0.92)">
+      <div class="pc-orn">❋</div>
+      <p class="pc-text">„Am curajul să fiu eu însumi."</p>
+      <div class="pc-div"></div>
+      <div class="pc-brand">Puterea Prezentului</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEME -->
+<section id="teme">
+  <span class="section-tag">✦ Ce vei găsi în colecție</span>
+  <h2 class="section-title">10 Teme Psihologice</h2>
+  <div class="deco-line"><span></span><em>✦</em><span></span></div>
+  <div class="teme-grid">
+    <div class="tema-card"><div class="tema-icon">🧘</div><div class="tema-name">Prezent & Mindfulness</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">🌊</div><div class="tema-name">Gestionarea Anxietății</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">💪</div><div class="tema-name">Reziliență & Forță</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">🤍</div><div class="tema-name">Auto-Compasiune</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">🍃</div><div class="tema-name">Acceptare & Eliberare</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">⭐</div><div class="tema-name">Încredere în Sine</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">💞</div><div class="tema-name">Relații Sănătoase</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">🎯</div><div class="tema-name">Scop & Împlinire</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">💚</div><div class="tema-name">Sănătate & Vitalitate</div><div class="tema-count">100 carduri</div></div>
+    <div class="tema-card"><div class="tema-icon">☯️</div><div class="tema-name">Pace Interioară</div><div class="tema-count">100 carduri</div></div>
+  </div>
+</section>
+
+<!-- PACHETE -->
+<section class="pachete" id="pachete">
+  <span class="section-tag">✦ Alege pachetul tău</span>
+  <h2 class="section-title">Pachete & Prețuri</h2>
+  <p class="section-desc">Fiecare pachet vine cu carduri de calitate premium și livrare în România.</p>
+  <div class="pachete-grid">
+
+    <div class="pachet">
+      <div class="pachet-icon">🃏</div>
+      <div class="pachet-name">Mini Kit</div>
+      <div class="pachet-desc">Perfect pentru a descoperi colecția sau ca mic cadou.</div>
+      <ul class="pachet-features">
+        <li>20 carduri tematice</li>
+        <li>Față & verso</li>
+        <li>Cutie kraft elegantă</li>
+        <li>Cod QR pe fiecare card</li>
+      </ul>
+      <div class="pachet-price"><sup>RON </sup>45</div>
+      <div class="pachet-price-note">+ livrare</div>
+      <a href="#comanda" class="btn-order">Comandă Mini Kit</a>
+    </div>
+
+    <div class="pachet featured">
+      <div class="pachet-badge">⭐ Cel mai popular</div>
+      <div class="pachet-icon">✨</div>
+      <div class="pachet-name">Setul Complet</div>
+      <div class="pachet-desc">Toate 1000 de carduri în cutie premium cu laminare catifelată.</div>
+      <ul class="pachet-features">
+        <li>1000 afirmații unice</li>
+        <li>Carton 350g soft-touch</li>
+        <li>Cutie rigidă cu panglică</li>
+        <li>Cod QR pe fiecare card</li>
+        <li>Ghid de utilizare inclus</li>
+      </ul>
+      <div class="pachet-price"><sup>RON </sup>299</div>
+      <div class="pachet-price-note">+ livrare gratuită</div>
+      <a href="#comanda" class="btn-order primary">Comandă Setul Complet</a>
+    </div>
+
+    <div class="pachet">
+      <div class="pachet-icon">🎁</div>
+      <div class="pachet-name">Cadou Personalizat</div>
+      <div class="pachet-desc">Set complet cu personalizare — ideal ca dar special.</div>
+      <ul class="pachet-features">
+        <li>1000 carduri premium</li>
+        <li>Numele destinatarului pe cutie</li>
+        <li>Mesaj scris de mână</li>
+        <li>Ambalaj cadou elegant</li>
+        <li>Livrare gratuită</li>
+      </ul>
+      <div class="pachet-price"><sup>RON </sup>349</div>
+      <div class="pachet-price-note">+ livrare gratuită</div>
+      <a href="#comanda" class="btn-order">Comandă Cadou</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- TESTIMONIALE -->
+<section id="testimoniale">
+  <span class="section-tag">✦ Ce spun clienții</span>
+  <h2 class="section-title">Povești Reale</h2>
+  <div class="deco-line"><span></span><em>✦</em><span></span></div>
+  <div class="testimoniale-grid">
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Am început să trag câte un card în fiecare dimineață și mi-a schimbat complet cum îmi încep ziua. Recomand cu toată inima!"</p>
+      <div class="testimonial-author">— Maria D., Cluj</div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Le-am cumpărat ca idee de cadou pentru prietena mea și acum vrea și ea un set. Calitatea e excepțională, se simte premiumul."</p>
+      <div class="testimonial-author">— Ioana P., București</div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Ca psiholog, le recomand pacienților mei. Afirmațiile sunt bine gândite și explicațiile de pe verso adaugă valoare reală."</p>
+      <div class="testimonial-author">— Dr. Ana M., Timișoara</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:rgba(255,255,255,0.02)">
+  <span class="section-tag">✦ Întrebări frecvente</span>
+  <h2 class="section-title">FAQ</h2>
+  <div class="deco-line"><span></span><em>✦</em><span></span></div>
+  <div class="faq-list">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Cât durează livrarea? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Livrarea se face în 3–5 zile lucrătoare în toată România prin curier. Vei primi un email de confirmare cu numărul de urmărire.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Pot personaliza cardurile cu un nume? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Da! Pachetul „Cadou Personalizat" include numele destinatarului pe cutie și un mesaj scris de mână. Specifică detaliile în formularul de comandă.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Ce calitate au cardurile? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Cardurile sunt tipărite pe carton de 350g cu laminare soft-touch catifelată față-verso. Sunt rezistente, elegante și au un finish premium la atingere.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">La ce duce codul QR de pe carduri? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Fiecare card are un cod QR care duce la pagina de Instagram @alexandraa.dianaaa unde găsești conținut suplimentar, ghiduri de practică și comunitatea colecției.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Pot returna produsul? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Da, acceptăm returnări în 14 zile de la primire dacă produsul este în starea originală. Contactează-ne la Instagram și rezolvăm rapid orice situație.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Oferiți discount pentru comenzi multiple? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Da! Pentru comenzi de 3+ seturi oferim 10% reducere, iar pentru 5+ seturi 15% reducere. Contactează-ne direct pe Instagram pentru comenzi en-gros.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final" id="comanda">
+  <h2 class="section-title">Începe Azi.</h2>
+  <p class="section-desc">Fiecare card este o invitație spre o versiune mai bună a ta. Nu aștepta momentul perfect — el este acum.</p>
+  <div class="hero-btns">
+    <a href="#pachete" class="btn-primary">Alege pachetul tău</a>
+    <a href="https://www.instagram.com/alexandraa.dianaaa" target="_blank" class="btn-secondary">Contactează pe Instagram</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">✦ Puterea Prezentului</div>
+  <a href="https://www.instagram.com/alexandraa.dianaaa" class="footer-ig">@alexandraa.dianaaa</a>
+  <div class="footer-copy">© 2025 Puterea Prezentului · Toate drepturile rezervate</div>
+</footer>
+
+<script>
+function toggleFaq(el){ el.classList.toggle('open'); }
+</script>
+</body>
+</html>

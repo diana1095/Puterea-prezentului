@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puterea Prezentului – 1000 Carduri</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --cream: #fdf8f2;
+    --gold: #c9a96e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #1a1226;
+    font-family: 'Jost', sans-serif;
+    min-height: 100vh;
+    padding: 40px 16px 80px;
+    overflow-x: hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(123,94,167,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(74,155,142,0.12) 0%, transparent 50%);
+    pointer-events:none; z-index:0;
+  }
+  .page-header { text-align:center; margin-bottom:40px; position:relative; z-index:1; }
+  .page-title {
+    font-family:'Cormorant Garamond', serif; font-weight:300;
+    font-size:clamp(2rem,5vw,3.5rem); color:var(--cream);
+    letter-spacing:0.12em; margin-bottom:8px;
+  }
+  .page-sub {
+    font-size:0.72rem; font-weight:300; letter-spacing:0.35em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:16px;
+  }
+  .deco { display:flex; align-items:center; gap:14px; max-width:300px; margin:0 auto; }
+  .deco span { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(201,169,110,0.4),transparent); }
+  .deco em { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.82rem; color:rgba(201,169,110,0.55); white-space:nowrap; }
+
+  /* CONTROLS */
+  .controls { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:20px; position:relative; z-index:1; }
+  .nav-btn {
+    font-family:'Jost',sans-serif; font-size:0.7rem; font-weight:400;
+    letter-spacing:0.18em; text-transform:uppercase;
+    padding:8px 20px; border-radius:30px; cursor:pointer;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.6);
+    transition:all 0.3s;
+  }
+  .nav-btn:hover,.nav-btn.active {
+    background:rgba(201,169,110,0.15); border-color:rgba(201,169,110,0.4); color:var(--gold);
+  }
+  .search-wrap { display:flex; justify-content:center; margin-bottom:16px; position:relative; z-index:1; }
+  .search-input {
+    font-family:'Jost',sans-serif; font-size:0.78rem; font-weight:300;
+    padding:10px 22px; border-radius:30px; width:min(360px,90vw);
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15);
+    color:var(--cream); outline:none; letter-spacing:0.05em;
+    transition:border-color 0.3s;
+  }
+  .search-input::placeholder { color:rgba(255,255,255,0.3); }
+  .search-input:focus { border-color:rgba(201,169,110,0.4); }
+
+  /* PAGINATION */
+  .pagination { display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:28px; flex-wrap:wrap; position:relative; z-index:1; }
+  .page-btn {
+    font-family:'Jost',sans-serif; font-size:0.68rem; font-weight:400;
+    padding:6px 14px; border-radius:20px; cursor:pointer;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.5);
+    transition:all 0.3s;
+  }
+  .page-btn:hover,.page-btn.active {
+    background:rgba(201,169,110,0.15); border-color:rgba(201,169,110,0.35); color:var(--gold);
+  }
+  .page-info { font-size:0.68rem; color:rgba(255,255,255,0.35); letter-spacing:0.15em; padding:0 8px; }
+
+  .counter {
+    text-align:center; margin-bottom:24px;
+    font-family:'Cormorant Garamond',serif; font-size:0.85rem; font-weight:300;
+    color:rgba(201,169,110,0.5); letter-spacing:0.2em; position:relative; z-index:1;
+  }
+
+  /* GRID */
+  .grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+    gap:24px; max-width:1200px; margin:0 auto; position:relative; z-index:1;
+  }
+
+  /* CARD */
+  .card-scene { perspective:1000px; height:390px; }
+  .card-inner {
+    width:100%; height:100%; position:relative;
+    transform-style:preserve-3d;
+    transition:transform 0.75s cubic-bezier(0.4,0,0.2,1);
+    cursor:pointer; border-radius:18px;
+  }
+  .card-scene:hover .card-inner { transform:rotateY(180deg); }
+  .card-face {
+    position:absolute; inset:0; border-radius:18px;
+    backface-visibility:hidden; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:28px 24px;
+  }
+  .card-back { transform:rotateY(180deg); }
+
+  /* VIOLET */
+  .v .card-front {
+    background:linear-gradient(145deg,#2d1b4e 0%,#4a2070 40%,#7b3fa0 100%);
+    border:1px solid rgba(201,169,110,0.3);
+    box-shadow:0 16px 45px rgba(123,94,167,0.45),inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .v .card-front::before {
+    content:''; position:absolute; top:-50px; right:-50px;
+    width:170px; height:170px;
+    background:radial-gradient(circle,rgba(201,169,110,0.2) 0%,transparent 70%);
+    border-radius:50%;
+  }
+  .v .card-back { background:linear-gradient(145deg,#1a0f35,#2d1b4e); border:1px solid rgba(201,169,110,0.2); box-shadow:0 16px 45px rgba(123,94,167,0.4); }
+
+  /* ROSE */
+  .r .card-front {
+    background:linear-gradient(135deg,#f9ddd3 0%,#f2b8a8 30%,#e08878 70%,#c96070 100%);
+    box-shadow:0 16px 45px rgba(201,96,112,0.35);
+  }
+  .r .card-front::before {
+    content:''; position:absolute; top:16px; left:16px; right:16px; bottom:16px;
+    border:1px solid rgba(255,255,255,0.28); border-radius:11px; pointer-events:none;
+  }
+  .r .card-back { background:linear-gradient(135deg,#fff5f2,#fde8e0); box-shadow:0 16px 45px rgba(201,96,112,0.2); }
+
+  /* TEAL */
+  .t .card-front {
+    background:linear-gradient(150deg,#0d4a5c 0%,#1a7a82 40%,#4ab8a0 100%);
+    box-shadow:0 16px 45px rgba(26,122,130,0.4);
+  }
+  .t .card-back { background:linear-gradient(150deg,#e8f7f5,#c8ede8); box-shadow:0 16px 45px rgba(26,122,130,0.2); }
+
+  /* FRONT */
+  .card-num { font-family:'Cormorant Garamond',serif; font-size:0.68rem; font-weight:300; letter-spacing:0.4em; text-transform:uppercase; margin-bottom:14px; position:relative; z-index:1; }
+  .v .card-num { color:var(--gold); }
+  .r .card-num { color:rgba(255,255,255,0.65); }
+  .t .card-num { color:rgba(255,255,255,0.55); }
+
+  .card-orn { font-size:1.5rem; margin-bottom:12px; position:relative; z-index:1; line-height:1; }
+
+  .card-text { font-family:'Cormorant Garamond',serif; font-size:clamp(0.95rem,2vw,1.15rem); font-weight:400; line-height:1.65; text-align:center; position:relative; z-index:1; }
+  .v .card-text { color:#f0e8ff; font-style:italic; }
+  .r .card-text { color:#fff; }
+  .t .card-text { color:#e8faf8; font-style:italic; }
+
+  .card-div { width:34px; height:1px; margin:14px auto; position:relative; z-index:1; }
+  .v .card-div { background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+  .r .card-div { background:linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent); }
+  .t .card-div { background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent); }
+
+  .card-brand { font-family:'Jost',sans-serif; font-size:0.58rem; font-weight:300; letter-spacing:0.3em; text-transform:uppercase; position:relative; z-index:1; }
+  .v .card-brand { color:rgba(201,169,110,0.55); }
+  .r .card-brand { color:rgba(255,255,255,0.45); }
+  .t .card-brand { color:rgba(255,255,255,0.4); }
+
+  /* BACK */
+  .back-icon { font-size:1.8rem; margin-bottom:10px; }
+  .back-title { font-family:'Cormorant Garamond',serif; font-size:0.85rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+  .back-desc { font-family:'Jost',sans-serif; font-size:0.73rem; font-weight:300; line-height:1.65; text-align:center; max-width:210px; margin-bottom:10px; }
+  .back-tip { padding:8px 14px; border-radius:30px; font-family:'Jost',sans-serif; font-size:0.65rem; font-weight:400; letter-spacing:0.06em; text-align:center; margin-bottom:10px; }
+  .qr-wrap { display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .qr-box { width:52px; height:52px; border-radius:7px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; }
+  .qr-box canvas,.qr-box img { width:52px!important; height:52px!important; }
+  .qr-label { font-family:'Jost',sans-serif; font-size:0.55rem; font-weight:300; letter-spacing:0.18em; text-transform:uppercase; }
+
+  .v .back-title{color:#7b5ea7;} .v .back-desc{color:#4a3570;} .v .back-tip{background:rgba(123,94,167,0.1);color:#7b5ea7;border:1px solid rgba(123,94,167,0.22);} .v .qr-label{color:rgba(123,94,167,0.6);}
+  .r .back-title{color:#c96070;} .r .back-desc{color:#7a3a45;} .r .back-tip{background:rgba(201,96,112,0.1);color:#c96070;border:1px solid rgba(201,96,112,0.22);} .r .qr-label{color:rgba(201,96,112,0.6);}
+  .t .back-title{color:#1a7a82;} .t .back-desc{color:#1a5a55;} .t .back-tip{background:rgba(74,155,142,0.1);color:#1a7a82;border:1px solid rgba(74,155,142,0.22);} .t .qr-label{color:rgba(26,122,130,0.6);}
+
+  .hint { text-align:center; font-size:0.65rem; font-weight:300; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.22); margin-top:36px; position:relative; z-index:1; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <p class="page-sub">Colecție premium · 1000 afirmații psihologice</p>
+  <h1 class="page-title">Puterea Prezentului</h1>
+  <div class="deco"><span></span><em>față & verso · cod QR · 1000 carduri</em><span></span></div>
+</div>
+
+<div class="controls">
+  <button class="nav-btn active" onclick="setFilter('all',this)">Toate (1000)</button>
+  <button class="nav-btn" onclick="setFilter('v',this)">🔮 Violet (500)</button>
+  <button class="nav-btn" onclick="setFilter('r',this)">🌸 Roz (250)</button>
+  <button class="nav-btn" onclick="setFilter('t',this)">🌊 Teal (250)</button>
+</div>
+<div class="search-wrap">
+  <input class="search-input" id="searchInput" placeholder="Caută o afirmație..." oninput="onSearch()">
+</div>
+<div class="pagination" id="pagination"></div>
+<div class="counter" id="counter">Afișând pagina 1 din 1000 carduri</div>
+<div class="grid" id="grid"></div>
+<div class="pagination" id="pagination2"></div>
+<p class="hint">✦ &nbsp; Trece mouse-ul peste carduri pentru a vedea verso &nbsp; ✦</p>
+
+<script>
+const INSTAGRAM = "https://www.instagram.com/alexandraa.dianaaa?igsh=aWZobm5hbHN4bHRv";
+const PER_PAGE = 20;
+let currentPage = 1;
+let currentFilter = 'all';
+let searchTerm = '';
+
+const icons = ["🌬️","🌊","💪","🫀","☁️","🍃","✨","🦁","⏳","👁️","🌀","🕊️","🌌","💨","⚡","🎒","🌸","🤍","🌅","🎭","🎯","🏔️","❓","🌈","🛋️","💚","🎓","☀️","🎈","🤝","☯️","🔦","🧩","📚","🔄","🪨","🌱","👣","🏗️","⚔️","⭐","💎","🎤","🏆","🌍","🦅","✨","🎯","💗","🔓","🎓","📈","🌟","🎁","🪜","📅","🎨","🎖️","💫","🛡️","🔋","🏅","⚓","🫂","😊","🎭","✋","🌺","🌄","💝","🦁","🌿","🔮","👑","🚀","🌠","🙏","🌟","🤲","📍","🗝️","🧭","⚡","🏗️","💛","🔥","🎭","💞","🏋️","🎖️","🌅","🎀","⚖️","💡","📊","🌺","🏡","🗺️","🌞","❤️","🌬️","🦋"];
+const ornaments = { v:'✦', r:'❋', t:'◈' };
+
+const categories = [
+  { name:"Prezent & Mindfulness", tip:"Numește 5 lucruri pe care le simți acum" },
+  { name:"Gestionarea Anxietății", tip:"Inspiră 4 sec · Ține 4 sec · Expiră 4 sec" },
+  { name:"Reziliență & Forță", tip:"Amintește-ți 3 momente în care ai reușit" },
+  { name:"Auto-Compasiune", tip:"Vorbește-ți ca unui prieten drag" },
+  { name:"Acceptare & Eliberare", tip:"Lasă emoția să fie acolo fără să o combați" },
+  { name:"Încredere în Sine", tip:"Scrie 3 lucruri în care ești bun" },
+  { name:"Valoare Personală", tip:"Privește-te în oglindă și spune: 'Te accept'" },
+  { name:"Creștere & Evoluție", tip:"Compară-te cu tine de acum un an" },
+  { name:"Relații Sănătoase", tip:"Evaluează: această relație îți aduce energie?" },
+  { name:"Scop & Direcție", tip:"Scrie un obiectiv mic și fă primul pas azi" },
+];
+
+// 1000 affirmations
+const afirmatii = [
+  // ANXIETATE & MINDFULNESS (1-200)
+  "Sunt în siguranță în acest moment. Respirația mea mă ancorează în prezent.",
+  "Anxietatea este o senzație temporară, nu realitatea mea permanentă.",
+  "Am trecut prin momente grele înainte și le-am depășit cu bine.",
+  "Corpul meu știe cum să se liniștească. Am încredere în el.",
+  "Gândurile mele nu sunt fapte. Le observ și le las să treacă.",
+  "Nu trebuie să controlez totul. Pot lăsa lucrurile să se desfășoare firesc.",
+  "Fiecare respirație adâncă îmi aduce calm și claritate interioară.",
+  "Sunt mai puternic decât frica mea.",
+  "Momentul de față este singurul loc în care trăiesc cu adevărat.",
+  "Nu sunt anxietatea mea. Eu sunt cel care o observă cu blândețe.",
+  "Permit emoțiilor să treacă prin mine fără să mă definească.",
+  "Mintea mea se poate liniști. Aleg pacea în acest moment.",
+  "Sunt protejat și îngrijit. Mă simt în siguranță.",
+  "Eliberez orice tensiune din corpul meu cu fiecare expirație.",
+  "Provocările din viața mea mă fac mai puternic, nu mă distrug.",
+  "Am resursele interioare necesare pentru a face față oricărei situații.",
+  "Nu am nevoie de perfecțiune pentru a mă simți bine.",
+  "Îmi permit să fiu uman, cu greșeli și cu lecții valoroase.",
+  "Fiecare moment dificil va trece. Nimic nu este permanent.",
+  "Mă detașez de scenariile negative pe care mintea le creează.",
+  "Aleg să mă concentrez pe ceea ce pot controla acum.",
+  "Sunt mai calm decât credeam. Mă conectez la liniștea din mine.",
+  "Nu trebuie să am toate răspunsurile. Este în regulă să nu știu.",
+  "Viitorul este deschis și plin de posibilități bune.",
+  "Relaxarea este starea mea naturală. Revin la ea cu ușurință.",
+  "Îmi ascult corpul și îi ofer ce are nevoie: odihnă și iubire.",
+  "Sunt capabil să gestionez incertitudinea cu grație și calm.",
+  "Fiecare zi îmi aduce o nouă șansă de a fi bine.",
+  "Mă eliberez de povara grijilor care nu îmi aparțin.",
+  "Sunt înconjurat de sprijin, chiar și atunci când nu îl văd.",
+  "Acceptarea acestui moment îmi aduce pace instantanee.",
+  "Frica îmi arată unde am nevoie de mai multă dragoste față de mine.",
+  "Mintea mea este un aliat, nu un dușman. O antrenez cu blândețe.",
+  "Îmi permit să greșesc și să învăț fără să mă pedepsesc.",
+  "Respirând conștient, îmi resetez sistemul nervos în câteva minute.",
+  "Sunt în pace cu ceea ce nu pot schimba.",
+  "Fiecare moment de anxietate este o invitație spre creștere.",
+  "Aleg curajul în locul fricii, pas cu pas, zi cu zi.",
+  "Îmi construiesc liniștea interioară zi de zi, cu răbdare.",
+  "Sunt suficient de puternic pentru ziua de astăzi.",
+  "Respir adânc și las tensiunea să se dizolve în aer.",
+  "Îmi anchorez atenția în prezent cu ajutorul simțurilor mele.",
+  "Fiecare expirație îmi eliberează stresul acumulat.",
+  "Sunt în legătură cu pacea mea interioară.",
+  "Mintea mea poate fi liniștită ca suprafața unui lac calm.",
+  "Îmi ofer spațiu să simt fără să judec ce simt.",
+  "Corpul meu îmi trimite semnale pe care le ascult cu înțelepciune.",
+  "Sunt în siguranță să simt orice emoție fără să fiu copleșit.",
+  "Anxietatea se dizolvă când o privesc cu curiozitate, nu cu frică.",
+  "Aleg să trăiesc în prezent, nu în îngrijorări despre viitor.",
+  "Fiecare moment este o oportunitate de a alege pacea.",
+  "Sunt anchorat în corp, în respirație, în momentul acesta.",
+  "Liniștea mea interioară nu depinde de circumstanțe exterioare.",
+  "Îmi permit să mă odihnesc fără vinovăție.",
+  "Sunt recunoscător pentru liniștea pe care o construiesc.",
+  "Mă eliberez de îngrijorările care nu îmi servesc.",
+  "Îmi dau voie să fiu imperfect și totuși valoros.",
+  "Sunt mai rezistent decât cred. Istoria mea o dovedește.",
+  "Fiecare respirație este un cadou pe care îl primesc cu recunoștință.",
+  "Mă întorc în prezent ori de câte ori mintea rătăcește.",
+  "Îngrijorarea nu schimbă viitorul, dar prezența îl îmbogățește.",
+  "Sunt în control cu ceea ce pot controla acum.",
+  "Îmi ofer compasiune în momentele dificile.",
+  "Pacea este disponibilă pentru mine în orice moment.",
+  "Sunt mai mult decât gândurile mele anxioase.",
+  "Îmi permit să exist fără să performez constant.",
+  "Fiecare zi ușoară sau grea mă modelează spre mai bine.",
+  "Sunt conectat la ceva mai mare decât anxietatea mea.",
+  "Mă întorc la respirație când mintea se agită.",
+  "Liniștea se află între fiecare două gânduri.",
+  "Îmi ofer răgaz să procesez emoțiile cu blândețe.",
+  "Nu trebuie să rezolv totul astăzi.",
+  "Sunt în pace cu ritmul meu propriu de vindecare.",
+  "Fiecare moment de calm este o victorie pe care o celebrez.",
+  "Mintea mea se liniștește când îi ofer atenție blândă.",
+  "Îmi permit să exist în incertitudine fără panică.",
+  "Sunt suficient de puternic pentru orice vine astăzi.",
+  "Emoțiile mele sunt valide și temporare în același timp.",
+  "Mă întorc mereu la centrul meu calm interior.",
+  "Respir și știu că totul va fi bine.",
+  "Sunt în siguranță să las garda jos și să mă relaxez.",
+  "Fiecare zi fără să cedez fricii este o zi câștigată.",
+  "Îmi construiesc reziliența prin fiecare provocare depășită.",
+  "Sunt mai înțelept decât fricile mele.",
+  "Mă eliberez de nevoia de certitudine absolută.",
+  "Prezența mea în acest moment este tot ce am nevoie.",
+  "Îmi ofer timp și spațiu să mă vindec.",
+  "Sunt capabil să navighez prin orice furtună emoțională.",
+  "Gândurile negre vin și pleacă. Eu rămân.",
+  "Îmi permit să exist fără justificări.",
+  "Sunt în armonie cu fluxul vieții mele.",
+  "Fiecare nouă zi aduce noi resurse de calm și putere.",
+  "Mă iertăm pentru momentele în care frica m-a copleșit.",
+  "Sunt blând cu mine în procesul de creștere.",
+  "Liniștea este mereu accesibilă când mă întorc la respirație.",
+  "Îmi reconectez la prezent prin toate simțurile mele.",
+  "Sunt capabil să tolerez disconfortul fără să fug de el.",
+  "Fiecare zi de practică a liniștii mă face mai puternic.",
+  "Îmi ofer compasiune necondiționată.",
+  // ACCEPTARE & ELIBERARE (101-200)
+  "Eliberez tot ce nu mai îmi servește cu recunoștință.",
+  "Accept lucrurile pe care nu le pot schimba cu grație.",
+  "Mă eliberez de așteptările altora și trăiesc pe ale mele.",
+  "Accept imperfecțiunea ca parte din frumusețea vieții.",
+  "Eliberez resentimentul și îmi deschid inima spre iertare.",
+  "Accept că nu știu tot și că este în regulă să caut.",
+  "Mă eliberez de comparații și îmbrățișez unicitatea mea.",
+  "Accept schimbarea ca pe o parte firească a vieții.",
+  "Eliberez nevoia de control și am încredere în proces.",
+  "Accept că greșelile sunt parte din experiența umană.",
+  "Mă eliberez de trecut și îmbrățișez prezentul.",
+  "Accept că durerea face parte din viață și din creștere.",
+  "Eliberez judecata față de mine și față de ceilalți.",
+  "Accept că nu pot mulțumi pe toată lumea și asta este în regulă.",
+  "Mă eliberez de povara perfecționismului.",
+  "Accept că unele întrebări nu au răspunsuri imediate.",
+  "Eliberez anxietatea prin acceptare, nu prin luptă.",
+  "Accept că viața are ritmul ei propriu, diferit de al meu.",
+  "Mă eliberez de scenariile catastrofice ale minții mele.",
+  "Accept că incertitudinea face parte din aventura vieții.",
+  "Eliberez tot ce mă ține în loc și avansez cu curaj.",
+  "Accept că sunt destul exact așa cum sunt acum.",
+  "Mă eliberez de nevoie de validare externă.",
+  "Accept că drumul meu este unic și nu seamănă cu al altcuiva.",
+  "Eliberez fricile din trecut care nu mai au putere asupra mea.",
+  "Accept că unele relații se încheie și asta face parte din viață.",
+  "Mă eliberez de povara vinovăției inutile.",
+  "Accept că vindecarea are propriul ei tempo.",
+  "Eliberez nevoia de a fi mereu productiv.",
+  "Accept că pauzele sunt la fel de importante ca efortul.",
+  "Mă eliberez de gândurile care îmi sapă energia.",
+  "Accept că nu trebuie să am totul rezolvat acum.",
+  "Eliberez atașamentul față de rezultate și mă bucur de proces.",
+  "Accept că emoțiile dificile sunt mesageri, nu dușmani.",
+  "Mă eliberez de imaginea idealizată despre cum ar trebui să fiu.",
+  "Accept că am nevoie de odihnă și mi-o permit fără vinovăție.",
+  "Eliberez așteptările nerealiste față de mine și față de alții.",
+  "Accept că viața nu este liniară și că zig-zagul face parte din ea.",
+  "Mă eliberez de obiceiurile de gândire care nu îmi servesc.",
+  "Accept că există lucruri dincolo de înțelegerea mea actuală.",
+  "Eliberez nevoie de a fi înțeles de toată lumea.",
+  "Accept că pot fi vulnerabil și totuși puternic.",
+  "Mă eliberez de așteptările pe care le-am preluat de la alții.",
+  "Accept că schimbarea este inevitabilă și uneori binecuvântată.",
+  "Eliberez tot ce nu este al meu de purtat.",
+  "Accept că unele zile sunt mai ușoare decât altele.",
+  "Mă eliberez de nevoia de a fi mereu cel mai bun.",
+  "Accept că a cere ajutor este un semn de înțelepciune.",
+  "Eliberez tensiunea din relațiile complicate cu iertare.",
+  "Accept că trecutul nu poate fi schimbat, dar viitorul poate fi construit.",
+  // INCREDERE IN SINE (201-400)
+  "Cred în mine și în capacitățile mele unice.",
+  "Sunt valoros exact așa cum sunt, în acest moment.",
+  "Vocea mea contează și merită să fie auzită.",
+  "Sunt mândru de cine am devenit și de drumul parcurs.",
+  "Am o perspectivă unică pe care lumea are nevoie să o audă.",
+  "Mă ridic după fiecare cădere, mai înțelept și mai puternic.",
+  "Succesul meu nu amenință pe nimeni. Îmi permit să strălucesc.",
+  "Sunt capabil să ating obiectivele pe care mi le propun.",
+  "Meresc iubire, respect și bunătate, în primul rând de la mine.",
+  "Nu am nevoie de aprobarea altora pentru a mă simți bine.",
+  "Greșelile mele nu mă definesc. Lecțiile din ele mă modelează.",
+  "Sunt în continuă creștere și evoluție. Mă mândresc cu progresul.",
+  "Am dreptul să ocup spațiu în această lume cu demnitate.",
+  "Sunt demn de tot binele care vine în viața mea.",
+  "Încrederea mea crește cu fiecare pas mic pe care îl fac.",
+  "Mă compar doar cu versiunea de ieri a mea.",
+  "Talentele și abilitățile mele sunt reale și valoroase.",
+  "Îmi asum responsabilitatea vieții mele cu mândrie și curaj.",
+  "Sunt o persoană care inspiră și aduce valoare în jur.",
+  "Limitele mele sunt oneste și sănătoase. Le respect cu fermitate.",
+  "Sunt un om puternic, capabil și plin de resurse interioare.",
+  "Îmi merit succesul. Nu este noroc, este munca mea.",
+  "Sunt sigur pe mine chiar și în situații noi sau dificile.",
+  "Îmi accept corpul și mintea cu dragoste și recunoștință.",
+  "Merit să fiu fericit fără să justifici de ce.",
+  "Sunt autentic și asta este cel mai mare cadou al meu.",
+  "Am curajul să spun nu atunci când este necesar.",
+  "Mă prețuiesc suficient încât să aleg medii sănătoase.",
+  "Fiecare zi este o dovadă că sunt capabil să continui.",
+  "Îmi dau voie să primesc complimente și apreciere cu grație.",
+  "Sunt mândru de curajul cu care înfrunt lucrurile grele.",
+  "Valoarea mea nu depinde de productivitate sau performanță.",
+  "Îmi ascult intuiția. Știe drumul corect pentru mine.",
+  "Sunt un lider în propria mea viață.",
+  "Am tot ce îmi trebuie pentru a începe. Acum este momentul.",
+  "Îmi permit să visez mare și să acționez cu consecvență.",
+  "Sunt recunoscător pentru tot ceea ce sunt și am.",
+  "Prezența mea face diferența în viețile celor din jur.",
+  "Pot cere ajutor și asta este un semn de forță, nu de slăbiciune.",
+  "Sunt exact acolo unde trebuie să fiu în viața mea.",
+  "Fiecare experiență m-a pregătit pentru acest moment.",
+  "Îmi respect valorile și trăiesc în acord cu ele.",
+  "Sunt plin de energie, motivație și entuziasm autentic.",
+  "Îmi construiesc viitorul dorit cu fiecare alegere de azi.",
+  "Sunt un om bun care face eforturi sincere. Asta este suficient.",
+  "Curajul meu este mai mare decât îndoiala mea.",
+  "Fiecare obstacol este o oportunitate deghizată în lecție.",
+  "Sunt demn de relații sănătoase, pline de respect și iubire.",
+  "Îmi admir propria rezistență și determinare.",
+  "Am reușit lucruri dificile înainte. Pot reuși din nou.",
+  "Sunt mai mult decât gândurile mele negative despre mine.",
+  "Generozitatea față de mine este la fel de importantă ca față de ceilalți.",
+  "Îmi apar drepturile cu calm și fermitate.",
+  "Sunt o sursă de inspirație pentru cei care mă cunosc.",
+  "Progresul, nu perfecțiunea, este scopul meu zilnic.",
+  "Îmi permit să fiu văzut, auzit și apreciat cu recunoștință.",
+  "Sunt exact destul de bun pentru viața pe care o construiesc.",
+  "Îmi trăiesc viața după valorile mele, cu respect față de ceilalți.",
+  "Fiecare dimineață este o nouă șansă de a fi cel mai bun eu.",
+  "Mă iubesc, mă accept și mă susțin necondiționat.",
+  "Am forța de a face față oricărei situații cu grație.",
+  "Sunt capabil de lucruri extraordinare prin efort consecvent.",
+  "Mă văd cu ochii blândeții, nu ai criticii.",
+  "Sunt suficient de curajos pentru a-mi urma visele.",
+  "Îmi onorez propria călătorie fără să o compar cu a altora.",
+  "Sunt capabil să creez schimbări pozitive în viața mea.",
+  "Mă tratez cu aceeași blândețe cu care i-aș trata pe cei dragi.",
+  "Sunt mândru de fiecare pas mic pe care îl fac spre obiectivele mele.",
+  "Am dreptul să fiu fericit, sănătos și împlinit.",
+  "Îmi recunosc și celebrez micile victorii zilnice.",
+  "Sunt capabil să construiesc viața pe care mi-o doresc.",
+  "Mă prețuiesc suficient pentru a investi în dezvoltarea mea.",
+  "Sunt un om demn de iubire necondiționată.",
+  "Îmi onorezi nevoile și dorințele cu respect față de mine.",
+  "Sunt capabil să comunic sincer și asertiv.",
+  "Mă iubesc chiar și când fac greșeli.",
+  "Sunt destul de puternic pentru a-mi urma calea proprie.",
+  "Îmi permit să strălucesc fără teama de a fi prea mult.",
+  "Sunt mândru de autenticitatea mea.",
+  "Am curajul să fiu eu însumi în orice circumstanță.",
+  "Sunt capabil să mă adaptez și să cresc în orice situație.",
+  "Îmi recunosc valoarea fără să am nevoie de dovezi externe.",
+  "Sunt suficient de bun pentru tot ce îmi doresc.",
+  "Mă văd ca o persoană capabilă și valoroasă.",
+  "Am dreptul să iau decizii care mă onorează.",
+  "Sunt conectat la forța și înțelepciunea mea interioară.",
+  "Mă susțin cu aceeași loialitate cu care i-aș susține pe alții.",
+  "Sunt capabil să creez relații autentice și pline de sens.",
+  "Îmi permit să fiu imperfect și totuși minunat.",
+  "Sunt suficient de valoros pentru a cere ce am nevoie.",
+  "Am forța de a transforma orice provocare în oportunitate.",
+  "Mă iubesc în toate versiunile mele, bune și mai puțin bune.",
+  "Sunt capabil să îmi ating potențialul maxim.",
+  "Îmi ofer ție însuți același respect pe care îl ofer altora.",
+  "Sunt mândru de identitatea mea unică și autentică.",
+  "Am curajul să rămân fidel valorilor mele chiar și sub presiune.",
+  "Sunt capabil să creez o viață plină de sens și bucurie.",
+  "Mă văd cu ochi de dragoste, nu de judecată.",
+  "Sunt suficient de puternic pentru a-mi depăși limitele.",
+  "Îmi permit să am succes și să mă bucur de el fără vinovăție.",
+  // RELATII & CONEXIUNE (301-400)
+  "Atrag relații sănătoase, echilibrate și pline de iubire.",
+  "Sunt capabil să ofer și să primesc iubire autentică.",
+  "Comunicarea mea sinceră construiește punți între inimii.",
+  "Mă înconjor de oameni care îmi susțin creșterea.",
+  "Sunt demn de o iubire care mă onorează și mă respectă.",
+  "Relațiile mele sunt bazate pe respect reciproc și înțelegere.",
+  "Îmi exprim nevoile cu claritate și fără vinovăție.",
+  "Sunt capabil să iert fără să uit lecțiile importante.",
+  "Aduc autenticitate și prezență în toate relațiile mele.",
+  "Sunt suficient de deschis pentru conexiuni profunde și semnificative.",
+  "Mă limitele mele sănătoase protejează relațiile mele.",
+  "Sunt capabil să fiu vulnerabil cu oamenii potriviți.",
+  "Aduc energie pozitivă în viața celor din jur.",
+  "Sunt un prieten, partener și coleg de încredere.",
+  "Îmi exprim iubirea prin acțiuni autentice și cuvinte sincere.",
+  "Atrag în viața mea oameni care îmi împărtășesc valorile.",
+  "Sunt capabil să accept oamenii cu imperfecțiunile lor.",
+  "Relațiile mele mă ajută să cresc și să devin mai bun.",
+  "Îmi ofer prezența deplină celor pe care îi iubesc.",
+  "Sunt recunoscător pentru conexiunile semnificative din viața mea.",
+  "Aduc blândețe și înțelegere în momentele dificile ale relațiilor.",
+  "Sunt capabil să navighez conflictele cu maturitate și empatie.",
+  "Mă înconjor de oameni care mă inspiră și mă ridică.",
+  "Îmi prețuiesc relațiile și investesc în ele cu intenție.",
+  "Sunt demn de o iubire care nu cere să mă pierd pe mine.",
+  "Comunicarea mea este clară, caldă și respectuoasă.",
+  "Atrag în viața mea prietenii autentice și durabile.",
+  "Sunt capabil să ofer suport fără să mă pierd pe mine.",
+  "Relațiile mele sănătoase îmi oferă energie și bucurie.",
+  "Îmi exprim aprecierea față de cei dragi în mod regulat.",
+  "Sunt capabil să mențin limite sănătoase cu bunătate.",
+  "Aduc compasiune și empatie în toate interacțiunile mele.",
+  "Sunt demn de a fi ales și apreciat de ceilalți.",
+  "Îmi onorezi relațiile prin prezență autentică și atenție.",
+  "Sunt capabil să construiesc comunitate și să aparțin undeva.",
+  "Mă bucur de conexiunile umane profunde și autentice.",
+  "Sunt recunoscător pentru oamenii care m-au ales în viața lor.",
+  "Aduc lumină și căldură în viețile celor din jur.",
+  "Sunt capabil să primesc iubire fără a o respinge sau diminua.",
+  "Relațiile mele sunt un spațiu sigur de creștere și autenticitate.",
+  // SCOP & IMPLINIRE (401-500)
+  "Viața mea are sens și scop profund.",
+  "Contribuția mea în lume este unică și valoroasă.",
+  "Urmez chemarea inimii mele cu curaj și determinare.",
+  "Sunt aliniat cu scopul meu de viață.",
+  "Acțiunile mele zilnice reflectă valorile mele profunde.",
+  "Sunt capabil să creez un impact pozitiv în lumea mea.",
+  "Îmi urmez visele cu pași concreți și consecveni.",
+  "Sunt motivat de un scop mai mare decât mine.",
+  "Contribuie la binele comun prin talentele mele unice.",
+  "Sunt conectat la un sens profund al existenței mele.",
+  "Viața mea este o expresie autentică a valorilor mele.",
+  "Sunt capabil să îmi construiesc moștenirea prin acțiuni zilnice.",
+  "Îmi trăiesc viața cu intenție și conștiință.",
+  "Sunt aliniat cu cea mai bună versiune a mea.",
+  "Contribue la un viitor mai bun prin alegerile de azi.",
+  "Sunt capabil să transform viziunile în realitate.",
+  "Îmi onorezi chemarea cu curaj și perseverență.",
+  "Sunt motivat de dragoste și scop, nu de frică.",
+  "Viața mea este o aventură plină de sens și bucurie.",
+  "Sunt capabil să ating excelența prin efort autentic.",
+  "Îmi urmez calea proprie cu determinare și grație.",
+  "Sunt conectat la ceea ce contează cu adevărat pentru mine.",
+  "Viața mea are o direcție clară și inspiratoare.",
+  "Sunt capabil să manifest ce mi-am propus prin acțiune consecventă.",
+  "Îmi dedic energia lucrurilor care contează cu adevărat.",
+  "Sunt aliniat cu potențialul meu maxim.",
+  "Contribue la lume prin prezența și acțiunile mele zilnice.",
+  "Sunt capabil să creez schimbarea pe care vreau să o văd.",
+  "Îmi trăiesc viața din abundență, nu din frică.",
+  "Sunt conectat la forța care mă ghidează spre împlinire.",
+  "Viața mea este o celebrare a posibilităților infinite.",
+  "Sunt capabil să construiesc o viață care mă reprezintă.",
+  "Îmi onorezi promisiunile față de mine și față de visele mele.",
+  "Sunt motivat de ceea ce iubesc, nu de ce mă teme.",
+  "Contribue la evoluția lumii prin autenticitatea mea.",
+  "Sunt capabil să las o amprentă pozitivă în toate domeniile vieții.",
+  "Îmi urmez intuiția spre o viață mai împlinită.",
+  "Sunt conectat la energia creativă și transformatoare din mine.",
+  "Viața mea este o expresie a iubirii și a scopului.",
+  "Sunt capabil să creez o moștenire de iubire și valoare.",
+  // GRATITUDINE & ABUNDENTA (501-600)
+  "Sunt recunoscător pentru fiecare respirație pe care o trag.",
+  "Abundența se manifestă în viața mea în toate formele.",
+  "Sunt recunoscător pentru lecțiile grele care m-au crescut.",
+  "Viața îmi oferă tot ce am nevoie la momentul potrivit.",
+  "Sunt recunoscător pentru corpul meu sănătos și capabil.",
+  "Abundența vine spre mine cu naturalețe și ușurință.",
+  "Sunt recunoscător pentru mintea mea capabilă de creștere.",
+  "Viața este generoasă cu mine când îi sunt recunoscător.",
+  "Sunt recunoscător pentru relațiile care mă susțin.",
+  "Abundența mea binecuvântează și pe cei din jurul meu.",
+  "Sunt recunoscător pentru fiecare zi nouă care mi se oferă.",
+  "Viața îmi aduce oportunități pe care le recunosc și le valorific.",
+  "Sunt recunoscător pentru forța mea de a continua.",
+  "Abundența mea crește cu fiecare gând de recunoștință.",
+  "Sunt recunoscător pentru momentele de bucurie simplă.",
+  "Viața mă surprinde mereu cu daruri neașteptate.",
+  "Sunt recunoscător pentru creșterea mea continuă.",
+  "Abundența există deja în viața mea, îmi deschid ochii s-o văd.",
+  "Sunt recunoscător pentru oamenii buni care mi-au traversat viața.",
+  "Viața îmi oferă tot ce îmi trebuie pentru a prospera.",
+  "Sunt recunoscător pentru capacitatea mea de a iubi.",
+  "Abundența vine din recunoștință și generozitate.",
+  "Sunt recunoscător pentru momentele de liniște și pace.",
+  "Viața este plină de frumusețe când o privesc cu ochi deschiși.",
+  "Sunt recunoscător pentru puterea mea de a depăși obstacole.",
+  "Abundența se manifestă în sănătate, iubire și bucurie.",
+  "Sunt recunoscător pentru misterul și minunea existenței.",
+  "Viața mă sprijină în fiecare pas al drumului meu.",
+  "Sunt recunoscător pentru lecțiile camuflate în provocări.",
+  "Abundența mea nu diminuează abundența altora.",
+  "Sunt recunoscător pentru capacitatea de a simți profund.",
+  "Viața îmi oferă exact ce am nevoie pentru a evolua.",
+  "Sunt recunoscător pentru fiecare moment de conexiune umană.",
+  "Abundența mă înconjoară în forme vizibile și invizibile.",
+  "Sunt recunoscător pentru posibilitatea de a alege.",
+  "Viața mă susține chiar și în momentele de incertitudine.",
+  "Sunt recunoscător pentru iubirea care există în viața mea.",
+  "Abundența mea crește când o împărtășesc cu generozitate.",
+  "Sunt recunoscător pentru capacitatea mea de a visa mare.",
+  "Viața este un dar pe care îl trăiesc cu recunoștință profundă.",
+  // SANATATE & VITALITATE (601-700)
+  "Corpul meu este sănătos, puternic și plin de vitalitate.",
+  "Am grijă de corpul meu cu iubire și respect.",
+  "Sănătatea mea este o prioritate pe care o onorezi zilnic.",
+  "Corpul meu știe cum să se vindece și îi ofer suportul necesar.",
+  "Am energie abundentă pentru tot ce contează în viața mea.",
+  "Mă hrănesc cu alimente care îmi nutriesc corpul și mintea.",
+  "Corpul meu este un templu pe care îl respect și îl îngrijesc.",
+  "Dorm bine și mă trezesc refăcut și plin de energie.",
+  "Mișcarea fizică îmi bucură corpul și mintea.",
+  "Corpul meu răspunde pozitiv la iubirea și atenția pe care i le ofer.",
+  "Sunt recunoscător pentru sănătatea pe care o am.",
+  "Îmi ascult corpul și îi respect semnalele.",
+  "Corpul meu este capabil de vindecare și regenerare.",
+  "Am o relație echilibrată cu mâncarea și cu mișcarea.",
+  "Mă odihnesc suficient pentru a funcționa la capacitate maximă.",
+  "Corpul meu este un partener în drumul meu spre împlinire.",
+  "Sănătatea mea mentală este la fel de importantă ca cea fizică.",
+  "Îmi ofer corpului apă, mișcare și odihnă din dragoste.",
+  "Corpul meu reflectă iubirea și grija pe care i le ofer.",
+  "Sunt conectat la ritmurile naturale ale corpului meu.",
+  "Mă bucur de energie și vitalitate în fiecare zi.",
+  "Corpul meu este un aliat puternic în viața mea.",
+  "Îmi onorezi corpul prin alegeri sănătoase zi de zi.",
+  "Sănătatea mea prosperă când mă îngrijesc cu intenție.",
+  "Corpul meu este mai înțelept decât cred.",
+  "Mă mișc din plăcere, nu din obligație sau pedeapsă.",
+  "Corpul meu merită hrană bună, odihnă și mișcare.",
+  "Sunt recunoscător pentru fiecare celulă a corpului meu sănătos.",
+  "Îmi construiesc obiceiuri sănătoase cu răbdare și consecvență.",
+  "Corpul meu este capabil să se adapteze și să crească.",
+  "Sănătatea mea este un act de iubire față de mine și cei dragi.",
+  "Îmi ofer corpului tot ce îi trebuie pentru a înflori.",
+  "Corpul meu comunică cu mine și îi răspund cu atenție.",
+  "Sunt conectat la înțelepciunea somatică a corpului meu.",
+  "Mă odihnesc fără vinovăție, știind că regenerarea este necesară.",
+  "Corpul meu este un instrument magnific pe care îl îngrijesc.",
+  "Sănătatea mea crește cu fiecare alegere conștientă.",
+  "Îmi mulțumesc corpului pentru tot ce face pentru mine.",
+  "Corpul meu este demn de iubire în orice formă are.",
+  "Sunt în armonie cu nevoile fizice și emoționale ale corpului.",
+  // CREATIVITATE & EXPRIMARE (701-800)
+  "Sunt o ființă creativă plină de idei originale.",
+  "Creativitatea mea curge liber și fără inhibiții.",
+  "Îmi exprim autenticitatea prin orice fac.",
+  "Sunt capabil să creez lucruri frumoase și semnificative.",
+  "Creativitatea mea este un cadou pe care îl ofer lumii.",
+  "Îmi permit să experimentez și să explorez fără frică de eșec.",
+  "Sunt plin de inspirație când îmi deschid mintea spre posibilități.",
+  "Creativitatea mea înflorește în spații de joacă și curiozitate.",
+  "Îmi exprim ideile cu curaj și autenticitate.",
+  "Sunt capabil să transform viziunile în creații tangibile.",
+  "Creativitatea mea este unică și valoroasă.",
+  "Îmi permit să fiu creativ fără să judec procesul.",
+  "Sunt inspirat de frumusețea din jurul meu.",
+  "Creativitatea mea crește când îmi ofer spațiu și timp.",
+  "Îmi exprim sufletul prin tot ceea ce creez.",
+  "Sunt capabil să aduc originalitate în orice domeniu.",
+  "Creativitatea mea este alimentată de curiozitate și pasiune.",
+  "Îmi permit să greșesc și să reiau în procesul creativ.",
+  "Sunt o sursă inepuizabilă de idei și soluții.",
+  "Creativitatea mea înflorește în libertate și autenticitate.",
+  "Îmi exprim viziunea cu curaj și determinare.",
+  "Sunt capabil să creez impact prin expresia mea autentică.",
+  "Creativitatea mea este un motor al evoluției mele.",
+  "Îmi permit să explorez căi neconvenționale spre soluții.",
+  "Sunt inspirat de propria mea experiență de viață.",
+  "Creativitatea mea aduce bucurie atât mie cât și altora.",
+  "Îmi exprim ideile cu claritate și pasiune.",
+  "Sunt capabil să inovez și să creez soluții originale.",
+  "Creativitatea mea este alimentată de dragoste față de viață.",
+  "Îmi permit să fiu un explorator curios al posibilităților.",
+  "Sunt plin de energie creativă pe care o canalizez cu intenție.",
+  "Creativitatea mea crește odată cu fiecare proiect.",
+  "Îmi exprim unicitatea prin fiecare alegere creativă.",
+  "Sunt capabil să creez frumusețe din materialele disponibile.",
+  "Creativitatea mea este o formă de meditație și prezență.",
+  "Îmi permit să fiu novator și să încerc lucruri noi.",
+  "Sunt o sursă de inspirație pentru mine și pentru alții.",
+  "Creativitatea mea nu are limite când îmi ofer libertate.",
+  "Îmi exprim valorile prin tot ceea ce creez.",
+  "Sunt capabil să transform ideile abstracte în realitate concretă.",
+  // CURAJ & ACTIUNE (801-900)
+  "Am curajul să acționez chiar și atunci când mi-e frică.",
+  "Iau decizii curajoase care mă onorează.",
+  "Sunt capabil să depășesc zona de confort cu grație.",
+  "Curajul meu crește cu fiecare pas spre necunoscut.",
+  "Acționez cu determinare spre visele mele.",
+  "Sunt capabil să înfrunt orice provocare cu curaj și calm.",
+  "Iau riscuri calculate care îmi servesc evoluția.",
+  "Curajul meu se manifestă în acțiuni mici și consistente.",
+  "Sunt dispus să încerc lucruri noi și să accept orice rezultat.",
+  "Acțiunile mele reflectă curajul și valorile mele.",
+  "Sunt capabil să spun adevărul meu cu blândețe și fermitate.",
+  "Curajul meu este alimentat de dragostea față de cine vreau să devin.",
+  "Iau inițiativa fără să aștept condițiile perfecte.",
+  "Sunt capabil să persist în fața dificultăților.",
+  "Acționez în direcția viselor mele în fiecare zi.",
+  "Curajul meu inspiră pe cei din jurul meu.",
+  "Sunt dispus să am conversații dificile când este necesar.",
+  "Acțiunile mele curajoase construiesc o viață autentică.",
+  "Sunt capabil să iau decizii greu și să le asum.",
+  "Curajul meu se manifestă în autenticitate și vulnerabilitate.",
+  "Iau pași mici și consecvenți spre transformarea mea.",
+  "Sunt capabil să înfrunt necunoscutul cu curiozitate.",
+  "Acțiunea este antidotul meu față de frică și paralizie.",
+  "Curajul meu crește cu fiecare provocare depășită.",
+  "Sunt dispus să fac greșeli în procesul de creștere.",
+  "Acționez din dragoste și scop, nu din frică.",
+  "Sunt capabil să rămân ferm în valorile mele sub presiune.",
+  "Curajul meu este o alegere pe care o fac în fiecare zi.",
+  "Iau decizii aliniate cu cea mai bună versiune a mea.",
+  "Sunt capabil să creez schimbarea pe care o doresc.",
+  "Acțiunile mele cotidiene construiesc viitorul pe care îl vizualizez.",
+  "Curajul meu crește proporțional cu intenția mea.",
+  "Sunt dispus să îmi asum responsabilitatea pentru viața mea.",
+  "Acționez cu claritate și determinare în direcția scopului meu.",
+  "Sunt capabil să transform frica în combustibil pentru acțiune.",
+  "Curajul meu se manifestă prin consecvență și perseverență.",
+  "Iau inițiativa și creez oportunități acolo unde le văd.",
+  "Sunt capabil să mă ridic și să încerc din nou după fiecare eșec.",
+  "Acțiunile mele îndrăznețe creează o viață remarcabilă.",
+  "Curajul meu este cel mai valoros activ al meu.",
+  // PAZ INTERIOARA & SPIRITUALITATE (901-1000)
+  "Sunt în pace cu mine și cu lumea din jurul meu.",
+  "Pacea mea interioară nu depinde de circumstanțe externe.",
+  "Sunt conectat la ceva mai profund decât mintea mea.",
+  "Liniștea mea interioară este un spațiu sacru pe care îl protejez.",
+  "Sunt în armonie cu ritmul universal al vieții.",
+  "Pacea vine din acceptarea clipei prezente exact cum este.",
+  "Sunt conectat la înțelepciunea universală care mă ghidează.",
+  "Liniștea mea interioară iraniază spre exterior și infectează pozitiv.",
+  "Sunt în pace cu tot ce a fost, ce este și ce va fi.",
+  "Pacea mea interioară este indestructibilă.",
+  "Sunt conectat la iubirea universală care mă susține.",
+  "Liniștea mea crește cu fiecare moment de prezență autentică.",
+  "Sunt în armonie cu natura și cu ciclurile vieții.",
+  "Pacea mea interioară este sursa din care acționez.",
+  "Sunt conectat la o forță mai mare care mă ghidează.",
+  "Liniștea mea este un refugiu accesibil oricând.",
+  "Sunt în pace cu misterul și cu ceea ce nu înțeleg.",
+  "Pacea vine din eliberarea atașamentelor care nu îmi servesc.",
+  "Sunt conectat la frumusețea simplă a momentului prezent.",
+  "Liniștea mea interioară este fundația vieții mele.",
+  "Sunt în armonie cu sufletul meu și cu calea mea.",
+  "Pacea mea crește cu fiecare act de iertare și acceptare.",
+  "Sunt conectat la bunătatea fundamentală a existenței.",
+  "Liniștea mea se adâncește cu fiecare practică spirituală.",
+  "Sunt în pace cu toate versiunile mele, trecute și prezente.",
+  "Pacea mea interioară este o sursă de forță și claritate.",
+  "Sunt conectat la frumusețea inerentă a vieții.",
+  "Liniștea mea este un cadou pe care îl ofer celor din jur.",
+  "Sunt în armonie cu cel mai profund adevăr al meu.",
+  "Pacea vine din a trăi în acord cu valorile mele.",
+  "Sunt conectat la iubirea care este fundația existenței.",
+  "Liniștea mea interioară mă ghidează spre decizii înțelepte.",
+  "Sunt în pace cu faptul că nu controlez totul.",
+  "Pacea mea crește când mă eliberez de nevoia de a fi perfect.",
+  "Sunt conectat la curgerea naturală a vieții.",
+  "Liniștea mea este prezentă chiar și în mijlocul furtunii.",
+  "Sunt în armonie cu tot ce sunt și cu tot ce devin.",
+  "Pacea mea interioară este mai puternică decât orice circumstanță.",
+  "Sunt conectat la esența mea cea mai profundă și autentică.",
+  "Pacea, iubirea și înțelepciunea sunt starea mea naturală.",
+];
+
+// Assign themes: 500 violet, 250 rose, 250 teal
+const themeList = [];
+for(let i=0;i<500;i++) themeList.push('v');
+for(let i=0;i<250;i++) themeList.push('r');
+for(let i=0;i<250;i++) themeList.push('t');
+// shuffle
+for(let i=themeList.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [themeList[i],themeList[j]]=[themeList[j],themeList[i]];
+}
+
+const ornaments2 = {v:'✦',r:'❋',t:'◈'};
+let qrQueue = [];
+let qrProcessing = false;
+
+function processQRQueue(){
+  if(qrProcessing||qrQueue.length===0) return;
+  qrProcessing=true;
+  const {elId,color} = qrQueue.shift();
+  const el=document.getElementById(elId);
+  if(el&&!el.dataset.done){
+    el.dataset.done='1';
+    try {
+      new QRCode(el,{
+        text:INSTAGRAM, width:52, height:52,
+        colorDark:color, colorLight:'#ffffff',
+        correctLevel:QRCode.CorrectLevel.M
+      });
+    } catch(e){}
+  }
+  setTimeout(()=>{qrProcessing=false;processQRQueue();},30);
+}
+
+let filtered = [];
+
+function buildFiltered(){
+  filtered = afirmatii.map((text,i)=>({
+    id:i+1, text,
+    theme:themeList[i],
+    icon:icons[i%icons.length],
+    cat:categories[Math.floor(i/100)%categories.length]
+  })).filter(a=>{
+    if(currentFilter!=='all'&&a.theme!==currentFilter) return false;
+    if(searchTerm&&!a.text.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    return true;
+  });
+}
+
+function renderPage(){
+  buildFiltered();
+  const total=filtered.length;
+  const totalPages=Math.max(1,Math.ceil(total/PER_PAGE));
+  if(currentPage>totalPages) currentPage=1;
+
+  const start=(currentPage-1)*PER_PAGE;
+  const pageCards=filtered.slice(start,start+PER_PAGE);
+
+  document.getElementById('counter').textContent=
+    `Afișând ${start+1}–${Math.min(start+PER_PAGE,total)} din ${total} carduri`;
+
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  qrQueue=[];
+
+  pageCards.forEach((a,idx)=>{
+    const qrId=`qr-${a.id}`;
+    const scene=document.createElement('div');
+    scene.className=`card-scene ${a.theme}`;
+    scene.style.opacity='0';
+    scene.style.animation=`none`;
+    scene.innerHTML=`
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <div class="card-num">Afirmație · ${String(a.id).padStart(3,'0')}</div>
+          <div class="card-orn">${ornaments2[a.theme]}</div>
+          <p class="card-text">„${a.text}"</p>
+          <div class="card-div"></div>
+          <div class="card-brand">Puterea Prezentului</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-icon">${a.icon}</div>
+          <div class="back-title">${a.cat.name}</div>
+          <p class="back-desc">${a.text.length>80?a.text.substring(0,80)+'...':a.text}</p>
+          <div class="back-tip">💡 ${a.cat.tip}</div>
+          <div class="qr-wrap">
+            <div class="qr-box" id="${qrId}"></div>
+            <div class="qr-label">@alexandraa.dianaaa</div>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(scene);
+
+    // Fade in
+    setTimeout(()=>{ scene.style.transition='opacity 0.4s ease'; scene.style.opacity='1'; },idx*25);
+
+    // Queue QR
+    const color=a.theme==='v'?'#4a2070':a.theme==='r'?'#c96070':'#0d4a5c';
+    qrQueue.push({elId:qrId,color});
+  });
+
+  setTimeout(()=>processQRQueue(),200);
+  renderPagination(totalPages);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderPagination(totalPages){
+  ['pagination','pagination2'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.innerHTML='';
+    if(totalPages<=1) return;
+
+    const prev=document.createElement('button');
+    prev.className='page-btn'; prev.textContent='← Prev';
+    prev.disabled=currentPage===1;
+    prev.onclick=()=>{if(currentPage>1){currentPage--;renderPage();}};
+    el.appendChild(prev);
+
+    const info=document.createElement('span');
+    info.className='page-info';
+    info.textContent=`Pag. ${currentPage} / ${totalPages}`;
+    el.appendChild(info);
+
+    // Show nearby pages
+    const pages=[];
+    pages.push(1);
+    for(let p=Math.max(2,currentPage-2);p<=Math.min(totalPages-1,currentPage+2);p++) pages.push(p);
+    if(totalPages>1) pages.push(totalPages);
+
+    pages.forEach((p,i)=>{
+      if(i>0&&pages[i]-pages[i-1]>1){
+        const dots=document.createElement('span');
+        dots.className='page-info'; dots.textContent='...';
+        el.appendChild(dots);
+      }
+      const btn=document.createElement('button');
+      btn.className='page-btn'+(p===currentPage?' active':'');
+      btn.textContent=p;
+      btn.onclick=(()=>{const pp=p;return()=>{currentPage=pp;renderPage();};})();
+      el.appendChild(btn);
+    });
+
+    const next=document.createElement('button');
+    next.className='page-btn'; next.textContent='Next →';
+    next.disabled=currentPage===totalPages;
+    next.onclick=()=>{if(currentPage<totalPages){currentPage++;renderPage();}};
+    el.appendChild(next);
+  });
+}
+
+function setFilter(f,btn){
+  currentFilter=f; currentPage=1;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPage();
+}
+
+let searchTimeout;
+function onSearch(){
+  clearTimeout(searchTimeout);
+  searchTimeout=setTimeout(()=>{
+    searchTerm=document.getElementById('searchInput').value;
+    currentPage=1; renderPage();
+  },300);
+}
+
+window.addEventListener('DOMContentLoaded',()=>renderPage());
+</script>
+</body>
+</html>

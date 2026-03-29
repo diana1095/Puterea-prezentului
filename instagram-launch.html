@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puterea Prezentului – Instagram Launch</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#111;
+  font-family:'Jost',sans-serif;
+  padding:40px 20px 80px;
+  min-height:100vh;
+}
+
+h2.section-title {
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  font-size:clamp(1.4rem,3vw,2rem); color:#fdf8f2;
+  letter-spacing:0.15em; text-align:center;
+  margin-bottom:6px;
+}
+.section-sub {
+  font-size:0.68rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(201,169,110,0.6); text-align:center; margin-bottom:36px;
+}
+
+.tabs {
+  display:flex; justify-content:center; gap:12px; margin-bottom:40px;
+}
+.tab {
+  font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:9px 24px; border-radius:30px; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.5);
+  transition:all 0.3s; font-family:'Jost',sans-serif;
+}
+.tab.active, .tab:hover {
+  background:rgba(201,169,110,0.15); border-color:rgba(201,169,110,0.4);
+  color:rgba(201,169,110,1);
+}
+
+/* POSTS GRID */
+.posts-grid {
+  display:flex; flex-wrap:wrap; justify-content:center; gap:32px;
+  max-width:1100px; margin:0 auto;
+}
+
+/* ── POST 1: Lansare principală (1:1) ── */
+.post {
+  border-radius:16px; overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  flex-shrink:0;
+}
+
+.post-1x1 {
+  width: min(480px, 90vw);
+  height: min(480px, 90vw);
+}
+
+/* ── STORY (9:16 ratio, scaled) ── */
+.post-story {
+  width: min(270px, 42vw);
+  height: min(480px, 74.6vw);
+}
+
+/* POST 1 — Dark Cosmic */
+.ig-post-1 {
+  width:100%; height:100%;
+  background: linear-gradient(145deg, #0e0820 0%, #1e0f3a 30%, #2d1b4e 60%, #1a2a4a 100%);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:40px 36px; position:relative; overflow:hidden;
+}
+.ig-post-1::before {
+  content:'';
+  position:absolute; top:-80px; right:-80px;
+  width:280px; height:280px;
+  background:radial-gradient(circle, rgba(201,169,110,0.2) 0%, transparent 65%);
+  border-radius:50%;
+}
+.ig-post-1::after {
+  content:'';
+  position:absolute; bottom:-100px; left:-60px;
+  width:300px; height:300px;
+  background:radial-gradient(circle, rgba(74,155,142,0.15) 0%, transparent 65%);
+  border-radius:50%;
+}
+.p1-border {
+  position:absolute; inset:14px;
+  border:1px solid rgba(201,169,110,0.18);
+  border-radius:8px; pointer-events:none;
+}
+.p1-corner { position:absolute; width:20px; height:20px; border-color:rgba(201,169,110,0.5); border-style:solid; }
+.p1-corner.tl { top:22px; left:22px; border-width:2px 0 0 2px; }
+.p1-corner.tr { top:22px; right:22px; border-width:2px 2px 0 0; }
+.p1-corner.bl { bottom:22px; left:22px; border-width:0 0 2px 2px; }
+.p1-corner.br { bottom:22px; right:22px; border-width:0 2px 2px 0; }
+
+.p1-tag {
+  font-size:0.6rem; letter-spacing:0.4em; text-transform:uppercase;
+  color:rgba(201,169,110,0.7); margin-bottom:20px;
+  position:relative; z-index:1;
+}
+.p1-orn { font-size:2.4rem; margin-bottom:14px; position:relative; z-index:1; }
+.p1-title {
+  font-family:'Cormorant Garamond',serif; font-weight:700;
+  font-size:clamp(2rem,6vw,2.8rem); color:#fdf8f2;
+  letter-spacing:0.12em; text-align:center; line-height:1.15;
+  position:relative; z-index:1; margin-bottom:6px;
+}
+.p1-subtitle {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-weight:300; font-size:clamp(0.85rem,2.5vw,1.05rem);
+  color:rgba(201,169,110,0.85); letter-spacing:0.12em;
+  text-align:center; position:relative; z-index:1; margin-bottom:24px;
+}
+.p1-divider {
+  width:50px; height:1px; margin:0 auto 24px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,110,0.7),transparent);
+  position:relative; z-index:1;
+}
+.p1-desc {
+  font-size:clamp(0.72rem,2vw,0.82rem); font-weight:300;
+  color:rgba(255,255,255,0.55); line-height:1.7; text-align:center;
+  max-width:320px; position:relative; z-index:1; margin-bottom:24px;
+}
+.p1-pills {
+  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+  position:relative; z-index:1; margin-bottom:22px;
+}
+.p1-pill {
+  font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase;
+  padding:5px 12px; border-radius:20px;
+  border:1px solid rgba(201,169,110,0.3); color:rgba(201,169,110,0.8);
+  background:rgba(201,169,110,0.07);
+}
+.p1-handle {
+  font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase;
+  color:rgba(255,255,255,0.3); position:relative; z-index:1;
+}
+
+/* POST 2 — Afirmație Featured (1:1) */
+.ig-post-2 {
+  width:100%; height:100%;
+  background:linear-gradient(135deg, #f9ddd3 0%, #f2b8a8 30%, #e08878 65%, #c96070 100%);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:40px 36px; position:relative; overflow:hidden;
+}
+.ig-post-2::before {
+  content:''; position:absolute;
+  inset:16px; border:1px solid rgba(255,255,255,0.3);
+  border-radius:8px; pointer-events:none;
+}
+.p2-num {
+  font-size:0.62rem; letter-spacing:0.4em; text-transform:uppercase;
+  color:rgba(255,255,255,0.6); margin-bottom:20px; position:relative; z-index:1;
+}
+.p2-orn { font-size:2.2rem; margin-bottom:16px; position:relative; z-index:1; }
+.p2-quote {
+  font-family:'Cormorant Garamond',serif; font-weight:400; font-style:italic;
+  font-size:clamp(1.2rem,3.5vw,1.5rem); color:#fff;
+  line-height:1.65; text-align:center;
+  position:relative; z-index:1; margin-bottom:24px;
+}
+.p2-divider {
+  width:40px; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);
+  margin:0 auto 20px; position:relative; z-index:1;
+}
+.p2-label {
+  font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(255,255,255,0.55); position:relative; z-index:1; margin-bottom:6px;
+}
+.p2-brand {
+  font-family:'Cormorant Garamond',serif; font-size:0.9rem; font-weight:600;
+  color:rgba(255,255,255,0.85); letter-spacing:0.15em;
+  position:relative; z-index:1;
+}
+
+/* STORY 1 — Dark */
+.ig-story-1 {
+  width:100%; height:100%;
+  background:linear-gradient(180deg, #0e0820 0%, #1e0f3a 40%, #2d1b4e 100%);
+  display:flex; flex-direction:column;
+  padding:28px 22px; position:relative; overflow:hidden;
+}
+.ig-story-1::before {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:200px; height:200px;
+  background:radial-gradient(circle,rgba(201,169,110,0.22) 0%,transparent 65%);
+  border-radius:50%;
+}
+.s1-header {
+  display:flex; align-items:center; gap:8px; margin-bottom:auto;
+}
+.s1-avatar {
+  width:32px; height:32px; border-radius:50%;
+  background:linear-gradient(135deg,#7b3fa0,#c96070);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.75rem; border:1.5px solid rgba(201,169,110,0.5);
+}
+.s1-handle { font-size:0.65rem; color:rgba(255,255,255,0.7); letter-spacing:0.08em; }
+
+.s1-main {
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:center; flex:1; padding:20px 0;
+}
+.s1-orn { font-size:2rem; margin-bottom:14px; }
+.s1-text {
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:400;
+  font-size:clamp(1rem,3.5vw,1.2rem); color:#f0e8ff;
+  line-height:1.7; text-align:center; margin-bottom:20px;
+}
+.s1-divider {
+  width:30px; height:1px; margin:0 auto 14px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,110,0.7),transparent);
+}
+.s1-num { font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:rgba(201,169,110,0.6); }
+
+.s1-footer {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.s1-swipe {
+  font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+}
+.s1-cta {
+  font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:8px 20px; border-radius:20px;
+  border:1px solid rgba(201,169,110,0.4); color:rgba(201,169,110,0.9);
+  background:rgba(201,169,110,0.08);
+}
+
+/* STORY 2 — Rose */
+.ig-story-2 {
+  width:100%; height:100%;
+  background:linear-gradient(180deg,#f9ddd3 0%,#e8878c 50%,#c96070 100%);
+  display:flex; flex-direction:column;
+  padding:28px 22px; position:relative; overflow:hidden;
+}
+.ig-story-2::before {
+  content:''; position:absolute; inset:12px;
+  border:1px solid rgba(255,255,255,0.25); border-radius:8px; pointer-events:none;
+}
+.s2-top {
+  display:flex; justify-content:space-between; align-items:center;
+  position:relative; z-index:1;
+}
+.s2-brand {
+  font-family:'Cormorant Garamond',serif; font-size:0.75rem; font-weight:600;
+  color:rgba(255,255,255,0.85); letter-spacing:0.2em; text-transform:uppercase;
+}
+.s2-num { font-size:0.6rem; color:rgba(255,255,255,0.5); letter-spacing:0.2em; }
+
+.s2-main {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:14px; position:relative; z-index:1;
+}
+.s2-orn { font-size:2rem; }
+.s2-quote {
+  font-family:'Cormorant Garamond',serif; font-weight:400;
+  font-size:clamp(1rem,3.5vw,1.15rem); color:#fff;
+  line-height:1.7; text-align:center;
+}
+.s2-cat {
+  font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(255,255,255,0.6); padding:5px 14px; border-radius:20px;
+  border:1px solid rgba(255,255,255,0.3);
+}
+
+.s2-footer {
+  display:flex; flex-direction:column; align-items:center;
+  gap:6px; position:relative; z-index:1;
+}
+.s2-link { font-size:0.65rem; letter-spacing:0.15em; color:rgba(255,255,255,0.7); }
+.s2-arrow { font-size:1rem; color:rgba(255,255,255,0.5); }
+
+/* CAPTION BOX */
+.caption-box {
+  max-width:500px; width:100%;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px; padding:24px;
+  margin-top:16px;
+}
+.caption-title {
+  font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(201,169,110,0.7); margin-bottom:14px;
+}
+.caption-text {
+  font-size:0.8rem; font-weight:300; color:rgba(255,255,255,0.65);
+  line-height:1.8; white-space:pre-line;
+}
+.caption-hashtags {
+  margin-top:12px; font-size:0.72rem;
+  color:rgba(100,150,255,0.7); line-height:1.8;
+}
+.copy-btn {
+  margin-top:12px; font-family:'Jost',sans-serif;
+  font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:7px 18px; border-radius:20px; cursor:pointer;
+  border:1px solid rgba(201,169,110,0.3); color:rgba(201,169,110,0.8);
+  background:rgba(201,169,110,0.07); transition:all 0.3s;
+}
+.copy-btn:hover { background:rgba(201,169,110,0.15); }
+
+.view { display:none; }
+.view.active { display:block; }
+
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.animate { animation:fadeUp 0.6s ease forwards; }
+</style>
+</head>
+<body>
+
+<div style="text-align:center;margin-bottom:16px;">
+  <h2 class="section-title">Conținut Instagram</h2>
+  <p class="section-sub">Posturi & Story-uri gata de publicat</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('posts',this)">📸 Posturi Feed</button>
+  <button class="tab" onclick="show('stories',this)">📱 Story-uri</button>
+  <button class="tab" onclick="show('captions',this)">✍️ Texte & Hashtag-uri</button>
+</div>
+
+<!-- POSTS VIEW -->
+<div class="view active animate" id="view-posts">
+  <div class="posts-grid">
+
+    <!-- Post 1: Lansare -->
+    <div>
+      <p style="font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,169,110,0.6);text-align:center;margin-bottom:12px;">Post Lansare · 1:1</p>
+      <div class="post post-1x1">
+        <div class="ig-post-1">
+          <div class="p1-border"></div>
+          <div class="p1-corner tl"></div><div class="p1-corner tr"></div>
+          <div class="p1-corner bl"></div><div class="p1-corner br"></div>
+          <div class="p1-tag">✦ Nou · Disponibil acum ✦</div>
+          <div class="p1-orn">🌟</div>
+          <div class="p1-title">Puterea<br>Prezentului</div>
+          <div class="p1-subtitle">1000 afirmații pentru suflet</div>
+          <div class="p1-divider"></div>
+          <div class="p1-desc">Colecție premium de carduri psihologice pentru combaterea anxietății și creșterea încrederii în sine.</div>
+          <div class="p1-pills">
+            <span class="p1-pill">Anxietate</span>
+            <span class="p1-pill">Încredere</span>
+            <span class="p1-pill">Mindfulness</span>
+            <span class="p1-pill">Pace interioară</span>
+          </div>
+          <div class="p1-handle">@alexandraa.dianaaa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post 2: Afirmație -->
+    <div>
+      <p style="font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,169,110,0.6);text-align:center;margin-bottom:12px;">Post Afirmație Zilnică · 1:1</p>
+      <div class="post post-1x1">
+        <div class="ig-post-2">
+          <div class="p2-num">Afirmația zilei · #049</div>
+          <div class="p2-orn">❋</div>
+          <div class="p2-quote">„Meresc iubire, respect și bunătate, în primul rând de la mine."</div>
+          <div class="p2-divider"></div>
+          <div class="p2-label">din colecția</div>
+          <div class="p2-brand">Puterea Prezentului</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STORIES VIEW -->
+<div class="view animate" id="view-stories">
+  <div class="posts-grid">
+
+    <!-- Story 1: Dark Violet -->
+    <div>
+      <p style="font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,169,110,0.6);text-align:center;margin-bottom:12px;">Story Violet · 9:16</p>
+      <div class="post post-story">
+        <div class="ig-story-1">
+          <div class="s1-header">
+            <div class="s1-avatar">✦</div>
+            <span class="s1-handle">@alexandraa.dianaaa</span>
+          </div>
+          <div class="s1-main">
+            <div class="s1-orn">✦</div>
+            <div class="s1-text">„Sunt mai puternic decât frica mea."</div>
+            <div class="s1-divider"></div>
+            <div class="s1-num">card #008 · Puterea Prezentului</div>
+          </div>
+          <div class="s1-footer">
+            <div class="s1-swipe">↑ swipe up pentru colecție</div>
+            <div class="s1-cta">Comandă acum</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story 2: Rose -->
+    <div>
+      <p style="font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,169,110,0.6);text-align:center;margin-bottom:12px;">Story Roz · 9:16</p>
+      <div class="post post-story">
+        <div class="ig-story-2">
+          <div class="s2-top">
+            <span class="s2-brand">Puterea Prezentului</span>
+            <span class="s2-num">#065</span>
+          </div>
+          <div class="s2-main">
+            <div class="s2-orn">❋</div>
+            <div class="s2-quote">„Merit să fiu fericit fără să justific de ce."</div>
+            <div class="s2-cat">Valoare Personală</div>
+          </div>
+          <div class="s2-footer">
+            <div class="s2-arrow">↑</div>
+            <div class="s2-link">@alexandraa.dianaaa · comandă colecția</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CAPTIONS VIEW -->
+<div class="view animate" id="view-captions">
+  <div class="posts-grid" style="flex-direction:column;align-items:center;">
+
+    <div class="caption-box">
+      <div class="caption-title">📸 Caption · Post de Lansare</div>
+      <div class="caption-text">✨ A sosit momentul pe care l-am pregătit cu suflet.
+
+Îți prezint „Puterea Prezentului" — o colecție de 1000 de carduri psihologice create pentru a te sprijini zi de zi în combaterea anxietății și creșterea încrederii în tine.
+
+Fiecare card conține:
+🔮 O afirmație psihologică puternică
+📖 O explicație și un sfat de practică
+📱 Un cod QR cu resurse suplimentare
+
+10 teme · 3 culori · calitate premium 💜🌸🌊
+
+Scrie-mi în DM sau accesează linkul din bio. 🎁</div>
+      <div class="caption-hashtags">#afirmatii #sanatatemintala #anxietate #incredereinsine #mindfulness #dezvoltarepersonala #psihologie #afirmatiiromana #putereaprezentului #wellbeing #mindset #motivatie #autocunoastere #pacea #spiritualitate</div>
+      <button class="copy-btn" onclick="copyText(this,'caption1')">📋 Copiază textul</button>
+    </div>
+
+    <div class="caption-box">
+      <div class="caption-title">🌸 Caption · Afirmație Zilnică</div>
+      <div class="caption-text">Afirmația zilei 🌸
+
+„Meresc iubire, respect și bunătate, în primul rând de la mine."
+
+Câte ori repeți asta azi? 💗
+
+Această afirmație face parte din colecția „Puterea Prezentului" — 1000 de carduri pentru sufletul tău. Disponibil acum, link în bio. ✨</div>
+      <div class="caption-hashtags">#afirmatiaZilei #iubirede sine #autocunoastere #putereaprezentului #afirmatii #sanatatemintala #mindset #bine #motivatie #psihologie</div>
+      <button class="copy-btn" onclick="copyText(this,'caption2')">📋 Copiază textul</button>
+    </div>
+
+    <div class="caption-box">
+      <div class="caption-title">📱 Caption · Story cu întrebare</div>
+      <div class="caption-text">Care afirmație îți vorbește cel mai mult azi? 👇
+
+A) „Sunt suficient exact așa cum sunt."
+B) „Anxietatea este temporară. Trece."
+C) „Am curajul să fiu eu însumi."
+D) „Merit tot binele care vine spre mine."
+
+Răspunde mai jos! 💜 Toate fac parte din colecția Puterea Prezentului — 1000 de carduri pentru tine.</div>
+      <button class="copy-btn" onclick="copyText(this,'caption3')">📋 Copiază textul</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function show(view, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  btn.classList.add('active');
+}
+
+function copyText(btn, id){
+  const box = btn.closest('.caption-box');
+  const text = box.querySelector('.caption-text').textContent;
+  const hashtags = box.querySelector('.caption-hashtags');
+  const full = text + (hashtags ? '\n\n' + hashtags.textContent : '');
+  navigator.clipboard.writeText(full).then(()=>{
+    btn.textContent = '✅ Copiat!';
+    setTimeout(()=>{ btn.textContent = '📋 Copiază textul'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>

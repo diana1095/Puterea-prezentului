@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formular Comandă – Puterea Prezentului</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root { --gold:#c9a96e; --cream:#fdf8f2; --violet:#7b5ea7; --deep:#0e0820; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--deep); font-family:'Jost',sans-serif;
+  color:var(--cream); min-height:100vh;
+  padding:60px 20px 80px;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(123,94,167,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(201,169,110,0.1) 0%, transparent 50%);
+  pointer-events:none;
+}
+
+.wrapper { max-width:960px; margin:0 auto; position:relative; z-index:1; }
+
+.header { text-align:center; margin-bottom:50px; }
+.header-tag {
+  font-size:0.65rem; letter-spacing:0.4em; text-transform:uppercase;
+  color:var(--gold); display:block; margin-bottom:14px;
+}
+.header h1 {
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  font-size:clamp(2rem,5vw,3rem); letter-spacing:0.1em; margin-bottom:8px;
+}
+.header p {
+  font-size:0.8rem; font-weight:300; color:rgba(255,255,255,0.45);
+  letter-spacing:0.08em;
+}
+
+.form-grid { display:grid; grid-template-columns:1fr 360px; gap:32px; align-items:start; }
+@media(max-width:768px){ .form-grid { grid-template-columns:1fr; } }
+
+/* FORM */
+.form-card {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px; padding:36px 32px;
+}
+.form-section-title {
+  font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600;
+  letter-spacing:0.08em; color:var(--gold); margin-bottom:22px;
+  padding-bottom:12px; border-bottom:1px solid rgba(201,169,110,0.15);
+}
+.field { margin-bottom:20px; }
+.field label {
+  display:block; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:rgba(255,255,255,0.5); margin-bottom:8px;
+}
+.field input, .field select, .field textarea {
+  width:100%; font-family:'Jost',sans-serif; font-size:0.85rem; font-weight:300;
+  padding:13px 18px; border-radius:12px;
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+  color:var(--cream); outline:none; transition:border-color 0.3s, background 0.3s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color:rgba(201,169,110,0.45); background:rgba(255,255,255,0.09);
+}
+.field input::placeholder, .field textarea::placeholder { color:rgba(255,255,255,0.25); }
+.field select option { background:#1e0f3a; color:var(--cream); }
+.field textarea { resize:vertical; min-height:80px; }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+/* PACKAGE SELECTOR */
+.pkg-options { display:flex; flex-direction:column; gap:10px; margin-bottom:6px; }
+.pkg-option {
+  display:flex; align-items:center; gap:14px; padding:14px 16px;
+  border-radius:12px; border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.04); cursor:pointer; transition:all 0.3s;
+}
+.pkg-option:hover { border-color:rgba(201,169,110,0.3); background:rgba(201,169,110,0.05); }
+.pkg-option.selected { border-color:rgba(201,169,110,0.5); background:rgba(201,169,110,0.1); }
+.pkg-option input[type=radio] { display:none; }
+.pkg-radio {
+  width:18px; height:18px; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.25); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; transition:all 0.3s;
+}
+.pkg-option.selected .pkg-radio {
+  border-color:var(--gold); background:var(--gold);
+}
+.pkg-radio::after {
+  content:''; width:7px; height:7px; border-radius:50%;
+  background:#fff; display:none;
+}
+.pkg-option.selected .pkg-radio::after { display:block; }
+.pkg-info { flex:1; }
+.pkg-name { font-size:0.82rem; font-weight:400; margin-bottom:2px; }
+.pkg-detail { font-size:0.68rem; color:rgba(255,255,255,0.4); }
+.pkg-price { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; color:var(--gold); }
+
+/* PERSONALIZARE */
+.personaliz-section { margin-top:22px; overflow:hidden; max-height:0; transition:max-height 0.4s ease; }
+.personaliz-section.visible { max-height:300px; }
+
+/* TERMS */
+.terms-check {
+  display:flex; align-items:flex-start; gap:12px; cursor:pointer;
+  font-size:0.75rem; font-weight:300; color:rgba(255,255,255,0.5);
+  line-height:1.6; margin-top:24px;
+}
+.terms-check input { display:none; }
+.check-box {
+  width:18px; height:18px; border-radius:5px; flex-shrink:0; margin-top:2px;
+  border:1.5px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.04);
+  display:flex; align-items:center; justify-content:center; transition:all 0.3s;
+}
+.terms-check.checked .check-box { background:var(--gold); border-color:var(--gold); }
+.terms-check.checked .check-box::after { content:'✓'; font-size:0.7rem; color:#fff; }
+
+.submit-btn {
+  display:block; width:100%; font-family:'Jost',sans-serif;
+  font-size:0.75rem; letter-spacing:0.25em; text-transform:uppercase;
+  padding:16px; border-radius:50px; cursor:pointer; border:none;
+  background:linear-gradient(135deg,#7b3fa0,#c96070);
+  color:#fff; margin-top:24px;
+  box-shadow:0 8px 28px rgba(123,63,160,0.35); transition:all 0.3s;
+}
+.submit-btn:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(123,63,160,0.5); }
+
+/* ORDER SUMMARY */
+.summary-card {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px; padding:28px 24px; position:sticky; top:80px;
+}
+.summary-title {
+  font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:600;
+  color:var(--gold); margin-bottom:20px; padding-bottom:12px;
+  border-bottom:1px solid rgba(201,169,110,0.15);
+}
+.summary-item {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+  font-size:0.78rem;
+}
+.summary-item-label { color:rgba(255,255,255,0.55); }
+.summary-item-val { color:var(--cream); font-weight:400; }
+.summary-total {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px 0 0; margin-top:4px;
+}
+.summary-total-label {
+  font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:600;
+}
+.summary-total-val {
+  font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300;
+  color:var(--gold);
+}
+.summary-note {
+  font-size:0.65rem; color:rgba(255,255,255,0.3); line-height:1.7;
+  margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.06);
+}
+
+/* SUCCESS STATE */
+.success-overlay {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(14,8,32,0.95); backdrop-filter:blur(10px);
+  flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  padding:40px;
+}
+.success-overlay.visible { display:flex; }
+.success-icon { font-size:4rem; margin-bottom:20px; }
+.success-title {
+  font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300;
+  color:var(--cream); margin-bottom:10px; letter-spacing:0.1em;
+}
+.success-sub { font-size:0.85rem; font-weight:300; color:rgba(255,255,255,0.5); line-height:1.8; max-width:400px; }
+.success-btn {
+  margin-top:28px; font-family:'Jost',sans-serif; font-size:0.72rem;
+  letter-spacing:0.2em; text-transform:uppercase; padding:13px 32px;
+  border-radius:30px; border:1px solid rgba(201,169,110,0.4);
+  color:var(--gold); background:rgba(201,169,110,0.08); cursor:pointer;
+  transition:all 0.3s;
+}
+.success-btn:hover { background:rgba(201,169,110,0.18); }
+
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.animate { animation:fadeUp 0.7s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">✦</div>
+  <div class="success-title">Comandă plasată!</div>
+  <p class="success-sub">Îți mulțumim! Vei fi contactat în maxim 24h pe Instagram sau email pentru confirmarea comenzii și detaliile de plată.</p>
+  <p class="success-sub" style="margin-top:10px;color:rgba(201,169,110,0.7);">@alexandraa.dianaaa</p>
+  <button class="success-btn" onclick="document.getElementById('successOverlay').classList.remove('visible')">Înapoi la formular</button>
+</div>
+
+<div class="wrapper">
+  <div class="header animate">
+    <span class="header-tag">✦ Comandă Acum</span>
+    <h1>Puterea Prezentului</h1>
+    <p>Completează formularul și vei fi contactat în 24h pentru confirmare</p>
+  </div>
+
+  <div class="form-grid">
+    <!-- FORM -->
+    <div class="form-card animate">
+
+      <!-- PACHET -->
+      <div class="form-section-title">1. Alege Pachetul</div>
+      <div class="pkg-options" id="pkgOptions">
+        <div class="pkg-option" onclick="selectPkg(this,'Mini Kit',45,'20 carduri tematice · cutie kraft')">
+          <div class="pkg-radio"></div>
+          <div class="pkg-info">
+            <div class="pkg-name">🃏 Mini Kit</div>
+            <div class="pkg-detail">20 carduri · cutie kraft · cod QR</div>
+          </div>
+          <div class="pkg-price">45 RON</div>
+        </div>
+        <div class="pkg-option selected" onclick="selectPkg(this,'Setul Complet',299,'1000 carduri · cutie rigidă · soft-touch')">
+          <div class="pkg-radio"></div>
+          <div class="pkg-info">
+            <div class="pkg-name">✨ Setul Complet <span style="font-size:0.6rem;padding:2px 8px;border-radius:10px;background:rgba(123,63,160,0.4);margin-left:6px;">Popular</span></div>
+            <div class="pkg-detail">1000 carduri · cutie rigidă · soft-touch · livrare gratuită</div>
+          </div>
+          <div class="pkg-price">299 RON</div>
+        </div>
+        <div class="pkg-option" onclick="selectPkg(this,'Cadou Personalizat',349,'1000 carduri · personalizare · mesaj scris de mână')">
+          <div class="pkg-radio"></div>
+          <div class="pkg-info">
+            <div class="pkg-name">🎁 Cadou Personalizat</div>
+            <div class="pkg-detail">1000 carduri · nume pe cutie · mesaj de mână · livrare gratuită</div>
+          </div>
+          <div class="pkg-price">349 RON</div>
+        </div>
+      </div>
+
+      <!-- PERSONALIZARE -->
+      <div class="personaliz-section" id="personalizSection">
+        <div style="height:16px;"></div>
+        <div class="form-section-title" style="font-size:0.9rem;">Detalii Personalizare</div>
+        <div class="field">
+          <label>Numele destinatarului (pe cutie)</label>
+          <input type="text" placeholder="ex: Pentru Ana, cu drag...">
+        </div>
+        <div class="field">
+          <label>Mesaj scris de mână (max. 100 caractere)</label>
+          <textarea placeholder="ex: Ești mai puternică decât crezi. Te iubesc!" maxlength="100"></textarea>
+        </div>
+      </div>
+
+      <div style="height:28px;"></div>
+
+      <!-- DATE CONTACT -->
+      <div class="form-section-title">2. Date de Contact</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Prenume</label>
+          <input type="text" id="fname" placeholder="Prenumele tău">
+        </div>
+        <div class="field">
+          <label>Nume</label>
+          <input type="text" id="lname" placeholder="Numele de familie">
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="email@exemplu.com">
+      </div>
+      <div class="field">
+        <label>Telefon</label>
+        <input type="tel" id="phone" placeholder="07XX XXX XXX">
+      </div>
+      <div class="field">
+        <label>Instagram (opțional)</label>
+        <input type="text" placeholder="@username">
+      </div>
+
+      <div style="height:28px;"></div>
+
+      <!-- LIVRARE -->
+      <div class="form-section-title">3. Adresă de Livrare</div>
+      <div class="field">
+        <label>Stradă și număr</label>
+        <input type="text" placeholder="Str. Exemplu, nr. 10, ap. 5">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Oraș</label>
+          <input type="text" placeholder="Cluj-Napoca">
+        </div>
+        <div class="field">
+          <label>Județ</label>
+          <select>
+            <option value="">Selectează județ</option>
+            <option>Alba</option><option>Arad</option><option>Argeș</option>
+            <option>Bacău</option><option>Bihor</option><option>Bistrița-Năsăud</option>
+            <option>Botoșani</option><option>Brașov</option><option>Brăila</option>
+            <option>București</option><option>Buzău</option><option>Caraș-Severin</option>
+            <option>Cluj</option><option>Constanța</option><option>Covasna</option>
+            <option>Dâmbovița</option><option>Dolj</option><option>Galați</option>
+            <option>Giurgiu</option><option>Gorj</option><option>Harghita</option>
+            <option>Hunedoara</option><option>Ialomița</option><option>Iași</option>
+            <option>Ilfov</option><option>Maramureș</option><option>Mehedinți</option>
+            <option>Mureș</option><option>Neamț</option><option>Olt</option>
+            <option>Prahova</option><option>Satu Mare</option><option>Sălaj</option>
+            <option>Sibiu</option><option>Suceava</option><option>Teleorman</option>
+            <option>Timiș</option><option>Tulcea</option><option>Vaslui</option>
+            <option>Vâlcea</option><option>Vrancea</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Cod poștal</label>
+        <input type="text" placeholder="400000">
+      </div>
+      <div class="field">
+        <label>Observații (opțional)</label>
+        <textarea placeholder="Orice detalii utile pentru livrare..."></textarea>
+      </div>
+
+      <div class="terms-check" id="termsCheck" onclick="toggleTerms()">
+        <input type="checkbox" id="terms">
+        <div class="check-box"></div>
+        <span>Am citit și sunt de acord cu termenii și condițiile. Înțeleg că voi fi contactat pentru confirmarea comenzii și că plata se face la livrare sau prin transfer bancar.</span>
+      </div>
+
+      <button class="submit-btn" onclick="submitOrder()">Trimite Comanda ✦</button>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-card animate">
+      <div class="summary-title">Rezumat Comandă</div>
+      <div class="summary-item">
+        <span class="summary-item-label">Pachet ales</span>
+        <span class="summary-item-val" id="sumPkg">Setul Complet</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-item-label">Cantitate</span>
+        <span class="summary-item-val">1 set</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-item-label">Livrare</span>
+        <span class="summary-item-val" id="sumLivrare">Gratuită</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-item-label">Plată</span>
+        <span class="summary-item-val">Ramburs / Transfer</span>
+      </div>
+      <div class="summary-total">
+        <span class="summary-total-label">Total</span>
+        <span class="summary-total-val" id="sumTotal">299 RON</span>
+      </div>
+      <div class="summary-note">
+        ✦ Vei fi contactat în maxim 24h pentru confirmarea comenzii.<br><br>
+        ✦ Livrare în 3–5 zile lucrătoare prin curier rapid.<br><br>
+        ✦ Plata se face la livrare (ramburs) sau prin transfer bancar înainte de expediere.
+      </div>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-bottom:8px;letter-spacing:0.15em;text-transform:uppercase;">Ai întrebări?</div>
+        <a href="https://www.instagram.com/alexandraa.dianaaa" target="_blank"
+           style="display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(201,169,110,0.8);font-size:0.75rem;">
+          📱 @alexandraa.dianaaa
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let selectedPkg = { name:'Setul Complet', price:299, detail:'1000 carduri · cutie rigidă · soft-touch' };
+
+function selectPkg(el, name, price, detail) {
+  document.querySelectorAll('.pkg-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPkg = {name, price, detail};
+  document.getElementById('sumPkg').textContent = name;
+  document.getElementById('sumTotal').textContent = price + ' RON';
+  document.getElementById('sumLivrare').textContent = price >= 299 ? 'Gratuită' : '20 RON';
+  // Show personalization if gift
+  const ps = document.getElementById('personalizSection');
+  ps.classList.toggle('visible', name === 'Cadou Personalizat');
+}
+
+function toggleTerms() {
+  const el = document.getElementById('termsCheck');
+  el.classList.toggle('checked');
+}
+
+function submitOrder() {
+  const terms = document.getElementById('termsCheck').classList.contains('checked');
+  const fname = document.getElementById('fname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  if(!fname || !email) { alert('Te rugăm completează cel puțin numele și emailul.'); return; }
+  if(!terms) { alert('Te rugăm să accepți termenii și condițiile.'); return; }
+  document.getElementById('successOverlay').classList.add('visible');
+}
+</script>
+</body>
+</html>
